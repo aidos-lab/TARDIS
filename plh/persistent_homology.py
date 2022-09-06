@@ -9,6 +9,8 @@ details.
 import gudhi as gd
 import numpy as np
 
+from gph import ripser_parallel
+
 
 class GUDHI:
     """Wrapper for GUDHI persistent homology calculations."""
@@ -35,20 +37,41 @@ class GUDHI:
             .persistence()
         )
 
+        if len(barcodes) == 0:
+            return None, -1
+
+        # TODO: Check whether this is *always* a feature of non-zero
+        # persistence.
+        max_dim = np.max([d for d, _ in barcodes])
+
         # TODO: We are throwing away dimensionality information; it is
         # thus possible that we are matching across different dimensions
         # in any distance calculation.
         barcodes = np.asarray([np.array(x) for _, x in barcodes])
 
-        if len(barcodes) > 0:
-            # TODO: Check whether this is *always* a feature of non-zero
-            # persistence.
-            max_dim = np.max([d for d, _ in barcodes])
-
-            return barcodes, max_dim
-
-        return None, -1
+        return barcodes, max_dim
 
     def distance(self, D1, D2):
         """Calculate Bottleneck distance between two persistence diagrams."""
+        return gd.bottleneck_distance(D1, D2)
+
+
+class Ripser:
+    def __call__(self, X, max_dim):
+        if len(X) == 0:
+            return [], -1
+
+        diagrams = ripser_parallel(
+            X, maxdim=max_dim, collapse_edges=True, n_threads=-1
+        )
+
+        diagrams = diagrams["dgms"]
+
+        max_dim = np.max([d for d, D in enumerate(diagrams) if len(D) > 0])
+
+        diagrams = np.row_stack(diagrams)
+
+        return diagrams, max_dim
+
+    def distance(self, D1, D2):
         return gd.bottleneck_distance(D1, D2)
