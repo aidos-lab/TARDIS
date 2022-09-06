@@ -116,7 +116,7 @@ class Euclidicity:
         if barcodes_euclidean is None:
             return np.nan, max_dim
 
-        dist = gd.bottleneck_distance(barcodes, barcodes_euclidean)
+        dist = self.vr.distance(barcodes, barcodes_euclidean)
         return dist, max_dim
 
 

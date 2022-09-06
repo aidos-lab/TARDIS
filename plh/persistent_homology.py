@@ -35,6 +35,9 @@ class GUDHI:
             .persistence()
         )
 
+        # TODO: We are throwing away dimensionality information; it is
+        # thus possible that we are matching across different dimensions
+        # in any distance calculation.
         barcodes = np.asarray([np.array(x) for _, x in barcodes])
 
         if len(barcodes) > 0:
@@ -45,3 +48,7 @@ class GUDHI:
             return barcodes, max_dim
 
         return None, -1
+
+    def distance(self, D1, D2):
+        """Calculate Bottleneck distance between two persistence diagrams."""
+        return gd.bottleneck_distance(D1, D2)
