@@ -11,9 +11,6 @@ gudhi = "^3.6.0"
 numpy = "^1.23.2"
 giotto-ph = "^0.2.2"
 
-[tool.poetry.group.dev.dependencies]
-austin-python = "^1.2.2"
-
 [tool.black]
 line-length = 79
 
