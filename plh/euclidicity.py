@@ -3,6 +3,7 @@
 import gudhi as gd
 import numpy as np
 
+from plh.persistent_homology import GUDHI
 from plh.shapes import sample_from_annulus
 
 
@@ -53,6 +54,9 @@ class Euclidicity:
         self.n_steps = n_steps
         self.max_dim = max_dim
 
+        # TODO: Make this configurable.
+        self.vr = GUDHI()
+
     def __call__(self, X, x):
         """Calculate Euclidicity of a specific point.
 
@@ -101,27 +105,16 @@ class Euclidicity:
             .persistence()
         )
 
-        if len(barcodes) > 0:
-            barcodes = np.asarray(barcodes)
-            max_dim = np.max(barcodes[:, 0])
-            barcodes = np.array([np.array(x) for x in barcodes[:, 1]])
-        else:
-            return np.nan, 0
+        barcodes, max_dim = self.vr(annulus, self.max_dim)
+
+        if max_dim < 0:
+            return np.nan, max_dim
 
         euclidean_annulus = sample_from_annulus(len(annulus), r, s)
-        barcodes_euclidean = (
-            gd.RipsComplex(points=euclidean_annulus)
-            .create_simplex_tree(max_dimension=self.max_dim)
-            .persistence()
-        )
+        barcodes_euclidean, _ = self.vr(euclidean_annulus, self.max_dim)
 
-        if len(barcodes_euclidean) > 0:
-            barcodes_euclidean = np.asarray(barcodes_euclidean)
-            barcodes_euclidean = np.asarray(
-                [np.array(x) for x in barcodes_euclidean[:, 1]]
-            )
-        else:
-            return np.nan, 0
+        if barcodes_euclidean is None:
+            return np.nan, max_dim
 
         dist = gd.bottleneck_distance(barcodes, barcodes_euclidean)
         return dist, max_dim
