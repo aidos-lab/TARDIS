@@ -106,8 +106,7 @@ class Euclidicity:
             max_dim = np.max(barcodes[:, 0])
             barcodes = np.array([np.array(x) for x in barcodes[:, 1]])
         else:
-            # TODO: Stop here, no?
-            pass
+            return np.nan, 0
 
         euclidean_annulus = sample_from_annulus(len(annulus), r, s)
         barcodes_euclidean = (
@@ -122,8 +121,20 @@ class Euclidicity:
                 [np.array(x) for x in barcodes_euclidean[:, 1]]
             )
         else:
-            # TODO: Stop here, no?
-            pass
+            return np.nan, 0
 
         dist = gd.bottleneck_distance(barcodes, barcodes_euclidean)
         return dist, max_dim
+
+
+########################################################################
+# HIC SVNT DRACONES
+########################################################################
+
+rng = np.random.default_rng(42)
+X = rng.uniform(low=0.0, high=1.0, size=(100, 2))
+x = (0.5, 0.5)
+
+euclidicity = Euclidicity(0.05, 0.25, 0.1, 0.5, 2, n_steps=10)
+values = euclidicity(X, x)
+print(values)
