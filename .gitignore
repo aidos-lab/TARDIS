@@ -1,0 +1,8 @@
+*~
+*.swp
+
+# Using this for `pyenv` and related tools. It can be ignored since we
+# do not enforce a specific version in practice.
+.python-version
+
+__pycache__/
