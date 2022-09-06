@@ -1,9 +1,10 @@
 """Euclidicity example implementation."""
 
-import gudhi as gd
 import numpy as np
 
 from plh.persistent_homology import GUDHI
+from plh.persistent_homology import Ripser
+
 from plh.shapes import sample_from_annulus
 
 
@@ -59,6 +60,8 @@ class Euclidicity:
 
         if method == "gudhi":
             self.vr = GUDHI()
+        elif method == "ripser":
+            self.vr = Ripser()
         else:
             raise RuntimeError("No persistent homology calculation selected.")
 
@@ -124,6 +127,6 @@ rng = np.random.default_rng(42)
 X = rng.uniform(low=0.0, high=1.0, size=(100, 2))
 x = (0.5, 0.5)
 
-euclidicity = Euclidicity(0.05, 0.25, 0.1, 0.5, 2, n_steps=10)
+euclidicity = Euclidicity(0.05, 0.25, 0.1, 0.5, 2, n_steps=20, method="ripser")
 values = euclidicity(X, x)
 print(values)
