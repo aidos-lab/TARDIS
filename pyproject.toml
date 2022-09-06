@@ -6,10 +6,13 @@ authors = ["Julius von Rohrscheidt <julius.rohrscheidt@helmholtz-muenchen.de>", 
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = ">=3.9,<4.0"
 gudhi = "^3.6.0"
 numpy = "^1.23.2"
 giotto-ph = "^0.2.2"
+
+[tool.poetry.group.dev.dependencies]
+austin-python = "^1.2.2"
 
 [tool.black]
 line-length = 79
