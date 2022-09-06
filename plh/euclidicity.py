@@ -10,7 +10,7 @@ from plh.shapes import sample_from_annulus
 class Euclidicity:
     """Functor for calculating Euclidicity of a point cloud."""
 
-    def __init__(self, r, R, s, S, max_dim, n_steps=100):
+    def __init__(self, r, R, s, S, max_dim, n_steps=100, method="gudhi"):
         """Initialise new instance of functor.
 
         Sets up a new instance of the Euclidicity functor and stores
@@ -37,6 +37,9 @@ class Euclidicity:
             Number of steps for the radius parameter grid of the
             annulus. Note that the complexity of the function is
             quadratic in the number of steps.
+
+        method : str
+            Persistent homology calculation method. TODO: Document me.
         """
         self.r = r
         self.R = R
@@ -54,8 +57,10 @@ class Euclidicity:
         self.n_steps = n_steps
         self.max_dim = max_dim
 
-        # TODO: Make this configurable.
-        self.vr = GUDHI()
+        if method == "gudhi":
+            self.vr = GUDHI()
+        else:
+            raise RuntimeError("No persistent homology calculation selected.")
 
     def __call__(self, X, x):
         """Calculate Euclidicity of a specific point.
