@@ -96,15 +96,6 @@ class Euclidicity:
             ]
         )
 
-        # TODO: This can be offloaded to a general persistent homology
-        # calculation method. We just need to make sure that the output
-        # is always provided in the same way.
-        barcodes = (
-            gd.RipsComplex(points=annulus)
-            .create_simplex_tree(max_dimension=self.max_dim)
-            .persistence()
-        )
-
         barcodes, max_dim = self.vr(annulus, self.max_dim)
 
         if max_dim < 0:
