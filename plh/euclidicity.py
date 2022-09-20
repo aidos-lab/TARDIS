@@ -120,7 +120,8 @@ class Euclidicity:
                 [
                     np.asarray(p)
                     for p in X
-                    if np.linalg.norm(x - p) <= s and np.linalg.norm(x - p) >= r
+                    if np.linalg.norm(x - p) <= s
+                    and np.linalg.norm(x - p) >= r
                 ]
             )
 
