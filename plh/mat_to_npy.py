@@ -1,0 +1,16 @@
+"""Convert .mat to .npy file(s)."""
+
+import os
+
+import numpy as np
+import scipy.io as sio
+import sys
+
+fname = sys.argv[1]
+X = sio.loadmat(fname)
+X = X["data"]
+
+fname = os.path.splitext(fname)[0]
+
+if not os.path.exists(fname):
+    np.savez(fname, X)
