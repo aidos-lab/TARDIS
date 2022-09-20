@@ -46,6 +46,6 @@ euclidicity = Euclidicity(0.05, 0.45, 0.2, 0.6, 2, n_steps=10, method="ripser")
 
 for x in X:
     values = euclidicity(X, x)
-    score = np.nanmean(values)
+    score = np.mean(np.nan_to_num(values))
 
     print(*x, score)
