@@ -1,13 +1,13 @@
-import numpy as np
+import joblib
 import sys
+
+import numpy as np
 
 from math import pi
 from math import cos
 from math import sin
 
 from plh.euclidicity import Euclidicity
-
-from tqdm import tqdm
 
 n = 4096
 m = 512
@@ -50,12 +50,20 @@ euclidicity = Euclidicity(
     0.05, 0.45, 0.2, 0.6, 2, n_steps=10, method="ripser", X=X
 )
 
-for x in tqdm(query_points, desc="Point"):
+
+def process_point(x):
+    """Process a single input point."""
     values = euclidicity(X, x)
     score = np.mean(np.nan_to_num(values))
 
     s = " ".join(str(a) for a in x)
     s += f" {score}"
-    tqdm.write(s)
 
-    sys.stdout.flush()
+    # TODO: Could also do something smarter here
+    print(s)
+    return score
+
+
+scores = joblib.Parallel(n_jobs=-1)(
+    joblib.delayed(process_point)(x) for x in query_points
+)
