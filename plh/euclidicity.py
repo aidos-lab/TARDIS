@@ -137,16 +137,3 @@ class Euclidicity:
 
         dist = self.vr.distance(barcodes, barcodes_euclidean)
         return dist, max_dim
-
-
-########################################################################
-# HIC SVNT DRACONES
-########################################################################
-
-rng = np.random.default_rng(42)
-X = rng.uniform(low=0.0, high=1.0, size=(100, 2))
-x = (0.5, 0.5)
-
-euclidicity = Euclidicity(0.05, 0.25, 0.1, 0.5, 2, n_steps=20, method="ripser")
-values = euclidicity(X, x)
-print(values)
