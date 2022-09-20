@@ -80,7 +80,7 @@ class Euclidicity:
         else:
             self.tree = None
 
-    def __call__(self, X, x):
+    def __call__(self, X, x, **kwargs):
         """Calculate Euclidicity of a specific point.
 
         Parameters
@@ -97,9 +97,14 @@ class Euclidicity:
         np.array
             Array containing Euclidicity estimates.
         """
+        r = kwargs.get("r", self.r)
+        R = kwargs.get("R", self.R)
+        s = kwargs.get("s", self.s)
+        S = kwargs.get("S", self.S)
+
         bottleneck_distances = []
-        for r in np.linspace(self.r, self.R, self.n_steps):
-            for s in np.linspace(self.s, self.S, self.n_steps):
+        for r in np.linspace(r, R, self.n_steps):
+            for s in np.linspace(s, S, self.n_steps):
                 if r < s:
                     dist, _ = self._calculate_euclidicity(r, s, X, x)
                     bottleneck_distances.append(dist)
