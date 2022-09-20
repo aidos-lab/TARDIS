@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from sklearn.neighbors import KDTree
+
 from plh.persistent_homology import GUDHI
 from plh.persistent_homology import Ripser
 
@@ -11,7 +13,9 @@ from plh.shapes import sample_from_annulus
 class Euclidicity:
     """Functor for calculating Euclidicity of a point cloud."""
 
-    def __init__(self, r, R, s, S, max_dim, n_steps=100, method="gudhi"):
+    def __init__(
+        self, r, R, s, S, max_dim, n_steps=100, method="gudhi", X=None
+    ):
         """Initialise new instance of functor.
 
         Sets up a new instance of the Euclidicity functor and stores
@@ -41,6 +45,10 @@ class Euclidicity:
 
         method : str
             Persistent homology calculation method. TODO: Document me.
+
+        X : np.array or None
+            If set, prepares a tree for nearest-neighbour and radius
+            queries on `X`, the input data set.
         """
         self.r = r
         self.R = R
@@ -64,6 +72,13 @@ class Euclidicity:
             self.vr = Ripser()
         else:
             raise RuntimeError("No persistent homology calculation selected.")
+
+        # Prepare KD tree to speed up annulus calculations. We make this
+        # configurable to permit both types of workflows.
+        if X is not None:
+            self.tree = KDTree(X)
+        else:
+            self.tree = None
 
     def __call__(self, X, x):
         """Calculate Euclidicity of a specific point.
@@ -94,15 +109,20 @@ class Euclidicity:
     # Auxiliary method for performing the 'heavy lifting' when it comes
     # to Euclidicity calculations.
     def _calculate_euclidicity(self, r, s, X, x):
-        # TODO: Turn this into a KD tree query; that way, we can benefit
-        # from pre-calculated things.
-        annulus = np.asarray(
-            [
-                np.asarray(p)
-                for p in X
-                if np.linalg.norm(x - p) <= s and np.linalg.norm(x - p) >= r
-            ]
-        )
+        if self.tree is not None:
+            inner_indices = self.tree.query_radius(x.reshape(1, -1), r)[0]
+            outer_indices = self.tree.query_radius(x.reshape(1, -1), s)[0]
+
+            annulus_indices = np.setdiff1d(outer_indices, inner_indices)
+            annulus = X[annulus_indices]
+        else:
+            annulus = np.asarray(
+                [
+                    np.asarray(p)
+                    for p in X
+                    if np.linalg.norm(x - p) <= s and np.linalg.norm(x - p) >= r
+                ]
+            )
 
         barcodes, max_dim = self.vr(annulus, self.max_dim)
 
