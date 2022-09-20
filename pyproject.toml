@@ -10,6 +10,7 @@ python = ">=3.9,<4.0"
 gudhi = "^3.6.0"
 numpy = "^1.23.2"
 giotto-ph = "^0.2.2"
+scikit-learn = "^1.1.2"
 
 [tool.black]
 line-length = 79
