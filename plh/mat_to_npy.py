@@ -13,4 +13,4 @@ X = X["data"]
 fname = os.path.splitext(fname)[0]
 
 if not os.path.exists(fname):
-    np.savez(fname, X)
+    np.savez(fname, data=X)
