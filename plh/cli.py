@@ -12,18 +12,53 @@ import os
 
 import numpy as np
 
+from plh.data import sample_vision_data_set
 from plh.euclidicity import Euclidicity
 
 
-def load(filename):
-    """Load data from filename, depending on input type."""
-    ext = os.path.splitext(filename)[1]
-    if ext == ".txt":
-        return np.loadtxt(filename)
-    elif ext == ".npz":
-        return np.load(filename)["data"]
+def load(filename, batch_size, n_query_points):
+    """Load data from filename, depending on input type.
+    
+    Parameters
+    ----------
+    filename : str
+        If this points to a file name, the function will attempt to load
+        said file and parse it. Else, the function will consider this as
+        the name of a data set to load.
 
-    return None
+    batch_size : int
+        Number of points to sample from data set.
+
+    n_query_points : int
+        Number of points to use for the subsequent Euclidicity
+        calculations. It is possible to use the full data set.
+
+    Returns
+    -------
+    Tuple of np.array, np.array
+        The (subsampled) data set along with its query points is
+        returned.
+    """
+    if os.path.exists(filename):
+        ext = os.path.splitext(filename)[1]
+        if ext == ".txt":
+            X = np.loadtxt(filename)
+        elif ext == ".npz":
+            X = np.load(filename)["data"]
+    else:
+        X = sample_vision_data_set(filename, batch_size)
+
+    assert X is not None, RuntimeError(
+        f"Unable to handle input file {filename}"
+    )
+
+    logger.info(f"Sampling a batch of {batch_size} points")
+    logger.info(f"Using {n_query_points} query points")
+
+    X = X[rng.choice(X.shape[0], batch_size, replace=False)]
+    query_points = X[rng.choice(X.shape[0], n_query_points, replace=False)]
+
+    return X, query_points
 
 
 def estimate_scales(X, query_points, k_max):
@@ -82,7 +117,13 @@ def setup():
     logger.setLevel(colorlog.INFO)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("INPUT", type=str, help="Input point cloud")
+    parser.add_argument(
+        "INPUT",
+        type=str,
+        help="Input point cloud or name of data set to load. If this points "
+        "to an existing file, the file is loaded. Else the input is treated "
+        "as the name of a (vision) data set.",
+    )
 
     euclidicity_group = parser.add_argument_group("Euclidicity calculations")
 
@@ -149,24 +190,12 @@ def setup():
 if __name__ == "__main__":
     logger, args = setup()
 
-    X = load(args.INPUT)
-
-    assert X is not None, RuntimeError(
-        f"Unable to handle input file {args.INPUT}"
-    )
-
     if args.seed is not None:
         logger.info(f"Using pre-defined seed {args.seed}")
 
     rng = np.random.default_rng(args.seed)
 
-    logger.info(f"Sampling a batch of {args.batch_size} points")
-    logger.info(f"Using {args.num_query_points} query points")
-
-    X = X[rng.choice(X.shape[0], args.batch_size, replace=False)]
-    query_points = X[
-        rng.choice(X.shape[0], args.num_query_points, replace=False)
-    ]
+    X, query_points = load(args.INPUT, args.batch_size, args.num_query_points)
 
     r, R, s, S = args.r, args.R, args.s, args.S
 
