@@ -25,7 +25,7 @@ def load(filename):
     return None
 
 
-def estimate_scales(X, k_max):
+def estimate_scales(X, query_points, k_max):
     """Perform simple scale estimation of the data set.
 
     Parameters
@@ -36,14 +36,14 @@ def estimate_scales(X, k_max):
 
     Returns
     --------
-    Tuple
-        A tuple consisting of the minimum and maximum inner and outer
-        radius, respectively.
+    List of dict
+        A list of dictionaries consisting of the minimum and maximum
+        inner and outer radius, respectively.
     """
     from sklearn.neighbors import KDTree
 
     tree = KDTree(X)
-    distances, _ = tree.query(X, k=k_max, return_distance=True)
+    distances, _ = tree.query(query_points, k=k_max, return_distance=True)
 
     # Ignore the distance to ourself, as we know that one already.
     distances = distances[:, 1:]
@@ -54,7 +54,17 @@ def estimate_scales(X, k_max):
     s_min = np.mean(distances[:, 5])
     s_max = np.mean(distances[:, -1])
 
-    return r_min, r_max, s_min, s_max
+    scales = [
+        {
+            "r": dist[0],
+            "R": dist[round(k_max / 3)],
+            "s": dist[round(k_max / 3)],
+            "S": dist[-1],
+        }
+        for dist in distances
+    ]
+
+    return scales
 
 
 if __name__ == "__main__":
@@ -62,6 +72,33 @@ if __name__ == "__main__":
     parser.add_argument("INPUT", type=str, help="Input point cloud")
     parser.add_argument(
         "--n-steps", default=10, type=int, help="Number of steps"
+    )
+    parser.add_argument(
+        "-d",
+        "--dimension",
+        default=2,
+        type=int,
+        help="Intrinsic dimension (can be an estimate)",
+    )
+    parser.add_argument(
+        "-r",
+        type=float,
+        help="Minimum inner radius of annulus",
+    )
+    parser.add_argument(
+        "-R",
+        type=float,
+        help="Maximum inner radius of annulus",
+    )
+    parser.add_argument(
+        "-s",
+        type=float,
+        help="Minimum outer radius of annulus",
+    )
+    parser.add_argument(
+        "-S",
+        type=float,
+        help="Maximum outer radius of annulus",
     )
 
     args = parser.parse_args()
@@ -79,26 +116,31 @@ if __name__ == "__main__":
     X = X[rng.choice(X.shape[0], 10000, replace=False)]
     query_points = X[rng.choice(X.shape[0], 100, replace=False)]
 
-    r_min, r_max, s_min, s_max = estimate_scales(X)
-    # print(r_min, r_max, s_min, s_max)
+    r, R, s, S = args.r, args.R, args.s, args.S
 
-    # TODO: Make configurable
-    dim = 2
+    # Check whether we have to perform scale estimation on a per-point
+    # basis. If not, we just supply an empty dict.
+    if all([x is not None for x in [r, R, s, S]]):
+        scales = [dict()] * len(query_points)
+    else:
+        scales = estimate_scales(X, query_points, 50)
+
+    max_dim = args.dimension
     n_steps = args.n_steps
 
     euclidicity = Euclidicity(
-        r_min,
-        r_max,
-        s_min,
-        s_max,
-        max_dim=dim,
+        max_dim=max_dim,
         n_steps=n_steps,
+        r=args.r,
+        R=args.R,
+        s=args.s,
+        S=args.S,
         method="ripser",
-        X=X,
+        data=X,
     )
 
-    def _process(x):
-        values = euclidicity(X, x)
+    def _process(x, scale=None):
+        values = euclidicity(X, x, **scale)
         score = np.mean(np.nan_to_num(values))
 
         s = " ".join(str(a) for a in x)
@@ -109,5 +151,6 @@ if __name__ == "__main__":
         return score
 
     scores = joblib.Parallel(n_jobs=-1)(
-        joblib.delayed(_process)(x) for x in query_points
+        joblib.delayed(_process)(x, scale)
+        for x, scale in zip(query_points, scales)
     )
