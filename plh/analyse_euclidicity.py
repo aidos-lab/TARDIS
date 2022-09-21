@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 
-from sklearn.manifold import MDS
+from sklearn.manifold import TSNE
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     if n_files == 1:
         axes = [axes]
 
-    emb = MDS()
+    emb = TSNE()
 
     for filename, ax in zip(args.FILE, axes):
         X = np.loadtxt(filename)
