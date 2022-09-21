@@ -14,54 +14,61 @@ class Euclidicity:
     """Functor for calculating Euclidicity of a point cloud."""
 
     def __init__(
-        self, r, R, s, S, max_dim, n_steps=100, method="gudhi", X=None
+        self,
+        max_dim,
+        r=None,
+        R=None,
+        s=None,
+        S=None,
+        n_steps=100,
+        data=None,
+        method="gudhi",
     ):
         """Initialise new instance of functor.
 
         Sets up a new instance of the Euclidicity functor and stores
-        shared parameters that will be used for the calculation.
+        shared parameters that will be used for the calculation. The
+        client has the choice of either providing global parameters,
+        or adjusting them on a per-point basis.
 
         Parameters
         ----------
-        r : float
-            Minimum inner radius of annulus
-
-        R : float
-            Maximum inner radius of annulus
-
-        s : float
-            Minimum outer radius of annulus
-
-        S : float
-            Maximum outer radius of annulus
-
         max_dim : int
             Maximum dimension for persistent homology approximations.
+            This is the *only* required parameter.
 
-        n_steps : int
+        r : float, optional
+            Minimum inner radius of annulus
+
+        R : float, optional
+            Maximum inner radius of annulus
+
+        s : float, optional
+            Minimum outer radius of annulus
+
+        S : float, optional
+            Maximum outer radius of annulus
+
+        n_steps : int, optional
             Number of steps for the radius parameter grid of the
             annulus. Note that the complexity of the function is
             quadratic in the number of steps.
 
-        method : str
-            Persistent homology calculation method. TODO: Document me.
-
-        X : np.array or None
+        data : np.array or None
             If set, prepares a tree for nearest-neighbour and radius
-            queries on `X`, the input data set.
+            queries on the input data set. This can lead to substantial
+            speed improvements in practice.
+
+        method : str
+            Persistent homology calculation method. At the moment, only
+            "gudhi" and "ripser" are supported. "gudhi" is better for a
+            small, low-dimensional data set, while "ripser" scales well
+            to larger, high-dimensional point clouds.
         """
         self.r = r
         self.R = R
         self.s = s
         self.S = S
-
-        # TODO: raise some nice and informative `RuntimeError` instances
-        # here. Could potentially also try to constrain these values.
-        assert r >= 0
-        assert s >= 0
-        assert r <= R
-        assert s <= S
-        assert R <= S
 
         self.n_steps = n_steps
         self.max_dim = max_dim
@@ -75,8 +82,8 @@ class Euclidicity:
 
         # Prepare KD tree to speed up annulus calculations. We make this
         # configurable to permit both types of workflows.
-        if X is not None:
-            self.tree = KDTree(X)
+        if data is not None:
+            self.tree = KDTree(data)
         else:
             self.tree = None
 
@@ -92,10 +99,29 @@ class Euclidicity:
         x : np.array, tensor, or iterable of shape ``(d, )``
             Input point.
 
+        Other Parameters
+        ----------------
+        r : float, optional
+            Minimum inner radius of annulus. Will default to global `r`
+            parameter if not set.
+
+        R : float, optional
+            Maximum inner radius of annulus. Will default to global `R`
+            parameter if not set.
+
+        s : float, optional
+            Minimum outer radius of annulus. Will default to global `s`
+            parameter if not set.
+
+        S : float, optional
+            Maximum outer radius of annulus. Will default to global `S`
+            parameter if not set.
+
         Returns
         -------
         np.array
-            Array containing Euclidicity estimates.
+            1D array containing Euclidicity estimates. The length of the
+            array depends on the number of scales.
         """
         r = kwargs.get("r", self.r)
         R = kwargs.get("R", self.R)
