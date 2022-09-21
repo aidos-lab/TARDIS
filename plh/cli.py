@@ -113,7 +113,6 @@ def setup():
         type=float,
         help="Maximum outer radius of annulus",
     )
-
     euclidicity_group.add_argument(
         "--n-steps",
         default=10,
@@ -130,13 +129,17 @@ def setup():
         type=int,
         help="Number of points to sample from input data",
     )
-
     sampling_group.add_argument(
         "-q",
         "--num-query-points",
         default=1000,
         type=int,
         help="Number of query points for Euclidicity calculations",
+    )
+    sampling_group.add_argument(
+        "--seed",
+        type=int,
+        help="Random number generator seed for reproducible experiments",
     )
 
     args = parser.parse_args()
@@ -152,12 +155,15 @@ if __name__ == "__main__":
         f"Unable to handle input file {args.INPUT}"
     )
 
-    # TODO: make configurable
-    # - seed
-    # - number of query points
-    # - number of samples of data set
-    rng = np.random.default_rng(42)
-    X = X[rng.choice(X.shape[0], 10000, replace=False)]
+    if args.seed is not None:
+        logger.info(f"Using pre-defined seed {args.seed}")
+
+    rng = np.random.default_rng(args.seed)
+
+    logger.info(f"Sampling a batch of {args.batch_size} points")
+    logger.info(f"Using {args.num_query_points} query points")
+
+    X = X[rng.choice(X.shape[0], args.batch_size, replace=False)]
     query_points = X[
         rng.choice(X.shape[0], args.num_query_points, replace=False)
     ]
