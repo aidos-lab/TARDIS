@@ -13,6 +13,7 @@ giotto-ph = "^0.2.2"
 scikit-learn = "^1.1.2"
 tqdm = "^4.64.1"
 joblib = "^1.2.0"
+colorlog = "^6.7.0"
 
 [tool.black]
 line-length = 79
