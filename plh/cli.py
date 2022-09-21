@@ -114,7 +114,7 @@ def setup():
         help="Maximum outer radius of annulus",
     )
     euclidicity_group.add_argument(
-        "--n-steps",
+        "--num-steps",
         default=10,
         type=int,
         help="Number of steps for annulus sampling",
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         scales = estimate_scales(X, query_points, 50)
 
     max_dim = args.dimension
-    n_steps = args.n_steps
+    n_steps = args.num_steps
 
     logger.info(f"Maximum dimension: {max_dim}")
     logger.info(f"Number of steps for local sampling: {n_steps}")
