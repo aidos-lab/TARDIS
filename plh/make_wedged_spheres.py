@@ -16,10 +16,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-d", "--dimension", type=int, help="Intrinsic dimension"
+        "-d", "--dimension", default=2, type=int, help="Intrinsic dimension"
     )
     parser.add_argument(
-        "-n", "--num-samples", type=int, help="Number of samples"
+        "-n",
+        "--num-samples",
+        default=10000,
+        type=int,
+        help="Number of samples",
     )
 
     args = parser.parse_args()
