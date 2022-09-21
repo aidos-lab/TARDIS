@@ -6,6 +6,7 @@ it will calculate Euclidicity scores.
 """
 
 import argparse
+import colorlog
 import joblib
 import os
 
@@ -48,12 +49,6 @@ def estimate_scales(X, query_points, k_max):
     # Ignore the distance to ourself, as we know that one already.
     distances = distances[:, 1:]
 
-    # TODO: We could pick something smarter here...
-    r_min = np.mean(distances[:, 0])
-    r_max = np.mean(distances[:, 5])
-    s_min = np.mean(distances[:, 5])
-    s_max = np.mean(distances[:, -1])
-
     scales = [
         {
             "r": dist[0],
@@ -68,6 +63,15 @@ def estimate_scales(X, query_points, k_max):
 
 
 if __name__ == "__main__":
+    handler = colorlog.StreamHandler()
+    handler.setFormatter(
+        colorlog.ColoredFormatter("%(log_color)s%(levelname)-.1s: %(message)s")
+    )
+
+    logger = colorlog.getLogger()
+    logger.addHandler(handler)
+    logger.setLevel(colorlog.INFO)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("INPUT", type=str, help="Input point cloud")
     parser.add_argument(
@@ -121,12 +125,25 @@ if __name__ == "__main__":
     # Check whether we have to perform scale estimation on a per-point
     # basis. If not, we just supply an empty dict.
     if all([x is not None for x in [r, R, s, S]]):
+        logger.info(
+            f"Using global scales r = {r:.2f}, R = {R:.2f}, "
+            f"s = {s:.2f}, S = {S:.2f}"
+        )
+
         scales = [dict()] * len(query_points)
     else:
+        logger.info(
+            "Performing scale estimation since no parameters "
+            "have been provided by the client."
+        )
+
         scales = estimate_scales(X, query_points, 50)
 
     max_dim = args.dimension
     n_steps = args.n_steps
+
+    logger.info(f"Maximum dimension: {max_dim}")
+    logger.info(f"Number of steps for local sampling: {n_steps}")
 
     euclidicity = Euclidicity(
         max_dim=max_dim,
