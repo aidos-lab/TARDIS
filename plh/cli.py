@@ -62,7 +62,16 @@ def estimate_scales(X, query_points, k_max):
     return scales
 
 
-if __name__ == "__main__":
+def setup():
+    """Perform logging and argument parsing setup.
+
+    Sets up the command-line interface for subsequent usage so that we
+    do not clutter up the actual Euclidicity calculations.
+
+    Returns
+    -------
+    Tuple of logger and parsed arguments
+    """
     handler = colorlog.StreamHandler()
     handler.setFormatter(
         colorlog.ColoredFormatter("%(log_color)s%(levelname)-.1s: %(message)s")
@@ -74,38 +83,69 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("INPUT", type=str, help="Input point cloud")
-    parser.add_argument(
-        "--n-steps", default=10, type=int, help="Number of steps"
-    )
-    parser.add_argument(
+
+    euclidicity_group = parser.add_argument_group("Euclidicity calculations")
+
+    euclidicity_group.add_argument(
         "-d",
         "--dimension",
         default=2,
         type=int,
-        help="Intrinsic dimension (can be an estimate)",
+        help="Known or estimated intrinsic dimension",
     )
-    parser.add_argument(
+    euclidicity_group.add_argument(
         "-r",
         type=float,
         help="Minimum inner radius of annulus",
     )
-    parser.add_argument(
+    euclidicity_group.add_argument(
         "-R",
         type=float,
         help="Maximum inner radius of annulus",
     )
-    parser.add_argument(
+    euclidicity_group.add_argument(
         "-s",
         type=float,
         help="Minimum outer radius of annulus",
     )
-    parser.add_argument(
+    euclidicity_group.add_argument(
         "-S",
         type=float,
         help="Maximum outer radius of annulus",
     )
 
+    euclidicity_group.add_argument(
+        "--n-steps",
+        default=10,
+        type=int,
+        help="Number of steps for annulus sampling",
+    )
+
+    sampling_group = parser.add_argument_group("Sampling")
+
+    sampling_group.add_argument(
+        "-b",
+        "--batch-size",
+        default=10000,
+        type=int,
+        help="Number of points to sample from input data",
+    )
+
+    sampling_group.add_argument(
+        "-q",
+        "--num-query-points",
+        default=1000,
+        type=int,
+        help="Number of query points for Euclidicity calculations",
+    )
+
     args = parser.parse_args()
+    return logger, args
+
+
+if __name__ == "__main__":
+    logger, args = setup()
+
     X = load(args.INPUT)
 
     assert X is not None, RuntimeError(
@@ -118,7 +158,9 @@ if __name__ == "__main__":
     # - number of samples of data set
     rng = np.random.default_rng(42)
     X = X[rng.choice(X.shape[0], 10000, replace=False)]
-    query_points = X[rng.choice(X.shape[0], 100, replace=False)]
+    query_points = X[
+        rng.choice(X.shape[0], args.num_query_points, replace=False)
+    ]
 
     r, R, s, S = args.r, args.R, args.s, args.S
 
