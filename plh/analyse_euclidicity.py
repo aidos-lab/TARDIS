@@ -36,6 +36,8 @@ if __name__ == "__main__":
         col,
         filename,
     ) in enumerate(args.FILE):
+        print(f"Processing {filename}")
+
         X = np.loadtxt(filename)
         euclidicity = X[:, -1].flatten()
 
