@@ -4,8 +4,6 @@ import argparse
 
 import numpy as np
 
-from sklearn.manifold import TSNE
-
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -17,18 +15,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     n_files = len(args.FILE)
-    fig, axes = plt.subplots(ncols=n_files)
+    fig, axes = plt.subplots(nrows=2, ncols=n_files, squeeze=False)
 
-    if n_files == 1:
-        axes = [axes]
-
-    emb = TSNE()
-
-    for filename, ax in zip(args.FILE, axes):
+    for (
+        col,
+        filename,
+    ) in enumerate(args.FILE):
         X = np.loadtxt(filename)
         euclidicity = X[:, -1].flatten()
 
-        X_emb = emb.fit_transform(X)
-        sns.scatterplot(x=X_emb[:, 0],  y=X_emb[:, 1], hue=euclidicity)
+        sns.histplot(data=euclidicity, kde=True, ax=axes[0, col])
+        sns.violinplot(data=euclidicity, ax=axes[1, col])
+        sns.stripplot(data=euclidicity, ax=axes[1, col], color="black", size=1)
 
     plt.show()
