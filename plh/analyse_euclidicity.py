@@ -53,7 +53,11 @@ if __name__ == "__main__":
     ) in enumerate(args.FILE):
         print(f"Processing {filename}")
 
-        X = np.loadtxt(filename)
+        if filename.endswith(".csv"):
+            X = np.loadtxt(filename, delimiter=",", skiprows=1)
+        else:
+            X = np.loadtxt(filename)
+
         euclidicity = X[:, -1].flatten()
 
         distributions.append(np.asarray(euclidicity))
