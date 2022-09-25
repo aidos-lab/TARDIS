@@ -16,11 +16,22 @@ def detect_outliers(data):
     q1 = np.percentile(data, 25)
     q3 = np.percentile(data, 75)
 
-    upper = (data > q3 + 1.5 * iqr)
-    lower = (data < q1 - 1.5 * iqr)
+    print("IQR", iqr)
+
+    upper = data > q3 + 1.5 * iqr
+    lower = data < q1 - 1.5 * iqr
 
     print("- Found", upper.sum(), "upper outliers")
     print("- Found", lower.sum(), "lower outliers")
+
+
+def print_summary_statistics(data):
+    """Print some summary statistics."""
+    print(
+        f"max = {np.max(data):.2f}, "
+        f"mean = {np.mean(data):.2f}, "
+        f"min = {np.min(data):.2f}",
+    )
 
 
 if __name__ == "__main__":
@@ -42,6 +53,7 @@ if __name__ == "__main__":
         euclidicity = X[:, -1].flatten()
 
         detect_outliers(euclidicity)
+        print_summary_statistics(euclidicity)
 
         sns.histplot(data=euclidicity, kde=True, ax=axes[0, col])
         sns.violinplot(data=euclidicity, ax=axes[1, col])
