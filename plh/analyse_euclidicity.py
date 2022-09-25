@@ -7,6 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from scipy.stats import tukey_hsd
+
 
 def detect_outliers(data):
     """Detect outliers based on IQR criterion."""
@@ -43,6 +45,8 @@ if __name__ == "__main__":
     n_files = len(args.FILE)
     fig, axes = plt.subplots(nrows=2, ncols=n_files, squeeze=False)
 
+    distributions = []
+
     for (
         col,
         filename,
@@ -52,6 +56,8 @@ if __name__ == "__main__":
         X = np.loadtxt(filename)
         euclidicity = X[:, -1].flatten()
 
+        distributions.append(np.asarray(euclidicity))
+
         detect_outliers(euclidicity)
         print_summary_statistics(euclidicity)
 
@@ -59,4 +65,5 @@ if __name__ == "__main__":
         sns.violinplot(data=euclidicity, ax=axes[1, col])
         sns.stripplot(data=euclidicity, ax=axes[1, col], color="black", size=1)
 
+    print(tukey_hsd(*distributions))
     plt.show()
