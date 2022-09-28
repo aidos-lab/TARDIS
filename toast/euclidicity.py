@@ -4,10 +4,10 @@ import numpy as np
 
 from sklearn.neighbors import KDTree
 
-from plh.persistent_homology import GUDHI
-from plh.persistent_homology import Ripser
+from toast.persistent_homology import GUDHI
+from toast.persistent_homology import Ripser
 
-from plh.shapes import sample_from_annulus
+from toast.shapes import sample_from_annulus
 
 
 class Euclidicity:

@@ -9,7 +9,7 @@ import sys
 
 import numpy as np
 
-from plh.shapes import sample_from_wedged_spheres
+from toast.shapes import sample_from_wedged_spheres
 
 
 if __name__ == "__main__":

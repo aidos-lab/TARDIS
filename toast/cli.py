@@ -12,8 +12,8 @@ import os
 
 import numpy as np
 
-from plh.data import sample_vision_data_set
-from plh.euclidicity import Euclidicity
+from toast.data import sample_vision_data_set
+from toast.euclidicity import Euclidicity
 
 
 def load(filename, batch_size, n_query_points):
