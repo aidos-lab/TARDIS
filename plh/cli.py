@@ -41,7 +41,7 @@ def load(filename, batch_size, n_query_points):
     """
     if os.path.exists(filename):
         ext = os.path.splitext(filename)[1]
-        if ext == ".txt":
+        if ext == ".txt" or ext == ".gz":
             X = np.loadtxt(filename)
         elif ext == ".npz":
             X = np.load(filename)["data"]
@@ -128,6 +128,13 @@ def setup():
     euclidicity_group = parser.add_argument_group("Euclidicity calculations")
 
     euclidicity_group.add_argument(
+        "-k",
+        "--num-neighbours",
+        default=50,
+        type=int,
+        help="Number of neighbours for parameter estimation"
+    )
+    euclidicity_group.add_argument(
         "-d",
         "--dimension",
         default=2,
@@ -198,6 +205,7 @@ if __name__ == "__main__":
     X, query_points = load(args.INPUT, args.batch_size, args.num_query_points)
 
     r, R, s, S = args.r, args.R, args.s, args.S
+    k = args.num_neighbours
 
     # Check whether we have to perform scale estimation on a per-point
     # basis. If not, we just supply an empty dict.
@@ -210,11 +218,11 @@ if __name__ == "__main__":
         scales = [dict()] * len(query_points)
     else:
         logger.info(
-            "Performing scale estimation since no parameters "
-            "have been provided by the client."
+            f"Performing scale estimation with k = {k} since no "
+            f"parameters have been provided by the client."
         )
 
-        scales = estimate_scales(X, query_points, 50)
+        scales = estimate_scales(X, query_points, k)
 
     max_dim = args.dimension
     n_steps = args.num_steps
