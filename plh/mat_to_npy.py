@@ -1,4 +1,8 @@
-"""Convert .mat to .npy file(s)."""
+"""Convert .mat to .npy file(s).
+
+Usage:
+    python mat_to_npy.py INPUT
+"""
 
 import os
 
