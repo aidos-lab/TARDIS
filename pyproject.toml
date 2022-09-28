@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "plh"
+name = "toast"
 version = "0.1.0"
-description = "Persistent Local Homology for Singularity Analysis"
+description = "TOAST: Topological Algorithm for Singularity Tracking"
 authors = ["Julius von Rohrscheidt <julius.rohrscheidt@helmholtz-muenchen.de>", "Bastian Rieck <bastian.rieck@helmholtz-muenchen.de>"]
 readme = "README.md"
 

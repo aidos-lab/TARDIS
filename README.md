@@ -40,7 +40,7 @@ are available for processing data.
 
 Run the following commands from the root directory of the repository:
 
-    $ cd plh
+    $ cd toast
     $ python cli.py ../data/Pinched_torus.txt.gz -q 500 -r 0.05 -R 0.45 -s 0.2 -S 0.6 > ../output/Pinched_torus.txt
 
 This will create a point cloud of 500 sample points with $x, y, z$
@@ -54,7 +54,7 @@ folder in the root directory).
 
 Run the following commands from the root directory of the repository:
 
-    $ cd plh
+    $ cd toast
     $ python cli.py -k 100 -q 2000 -d 2 --num-steps 20 ../data/Wedged_spheres_2D.txt.gz > ../output/Wedged_spheres_2D.txt
 
 This will make use of the automated parameter selection procedure based
