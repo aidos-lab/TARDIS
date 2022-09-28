@@ -18,7 +18,7 @@ from plh.euclidicity import Euclidicity
 
 def load(filename, batch_size, n_query_points):
     """Load data from filename, depending on input type.
-    
+
     Parameters
     ----------
     filename : str
@@ -132,7 +132,7 @@ def setup():
         "--num-neighbours",
         default=50,
         type=int,
-        help="Number of neighbours for parameter estimation"
+        help="Number of neighbours for parameter estimation",
     )
     euclidicity_group.add_argument(
         "-d",
