@@ -1,4 +1,8 @@
-"""Basic statistical analysis of Euclidicity scores."""
+"""Basic statistical analysis of Euclidicity scores.
+
+This is a helper script for analysing Euclidicity scores. It generates
+plots of the summary statistics and performs Tukey's range test.
+"""
 
 import argparse
 
