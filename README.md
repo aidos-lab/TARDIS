@@ -1,5 +1,7 @@
 # TOAST: Topological Algorithm for Singularity Tracking
 
+![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TOAST) ![GitHub](https://img.shields.io/github/license/aidos-lab/TOAST)
+
 ## Installation
 
 Our code has been tested with Python 3.8 and Python 3.9 under Mac OS
