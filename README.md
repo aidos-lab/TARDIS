@@ -13,8 +13,8 @@ This is the code for our preprint on singularity analysis:
 	eprint        = {2210.00069},
 	primaryclass  = {cs.LG},
 	abstract      = {The manifold hypothesis, which assumes that data lie on or close to an unknown manifold of low intrinsic dimensionality, is a staple of modern machine learning research. However, recent work has shown that real-world data exhibit distinct non-manifold structures, which result in singularities that can lead to erroneous conclusions about the data. Detecting such singularities is therefore crucial as a precursor to interpolation and inference tasks. We address detecting singularities by developing (i) persistent local homology, a new topology-driven framework for quantifying the intrinsic dimension of a data set locally, and (ii) Euclidicity, a topology-based multi-scale measure for assessing the 'manifoldness' of individual points. We show that our approach can reliably identify singularities of complex spaces, while also capturing singular structures in real-world data sets.},
-  type          = {Preprint},
-  repository    = {https://github.com/aidos-lab/TOAST},
+  type            = {Preprint},
+  repository      = {https://github.com/aidos-lab/TOAST},
 }
 ```
 
