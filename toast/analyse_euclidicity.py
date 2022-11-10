@@ -5,6 +5,7 @@ plots of the summary statistics and performs Tukey's range test.
 """
 
 import argparse
+import os
 
 import numpy as np
 
@@ -62,12 +63,19 @@ if __name__ == "__main__":
         else:
             X = np.loadtxt(filename)
 
+        # Skip empty files because they lead to problems in the
+        # downstream analysis.
+        if len(X) == 0:
+            continue
+
         euclidicity = X[:, -1].flatten()
 
         distributions.append(np.asarray(euclidicity))
 
         detect_outliers(euclidicity)
         print_summary_statistics(euclidicity)
+
+        axes[0, col].set_title(os.path.splitext(os.path.basename(filename))[0])
 
         sns.histplot(data=euclidicity, kde=True, ax=axes[0, col])
         sns.violinplot(data=euclidicity, ax=axes[1, col])
