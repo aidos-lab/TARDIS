@@ -23,7 +23,7 @@ def detect_outliers(data):
     q1 = np.percentile(data, 25)
     q3 = np.percentile(data, 75)
 
-    print("IQR", iqr)
+    print(f"Q1 = {q1:.2f}, Q3 = {q3:.2f}, IQR = {iqr:.2f}")
 
     upper = data > q3 + 1.5 * iqr
     lower = data < q1 - 1.5 * iqr
