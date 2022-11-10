@@ -73,5 +73,9 @@ if __name__ == "__main__":
         sns.violinplot(data=euclidicity, ax=axes[1, col])
         sns.stripplot(data=euclidicity, ax=axes[1, col], color="black", size=1)
 
-    print(tukey_hsd(*distributions))
+    # We can only do this with more than one distribution, but even for
+    # a single distribution, we can show the respective plot.
+    if len(distributions) > 1:
+        print(tukey_hsd(*distributions))
+
     plt.show()
