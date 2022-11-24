@@ -87,3 +87,42 @@ def sample_from_wedged_spheres(n=100, d=2, r=1, noise=None, seed=None):
         X += noise * rng.standard_normal(X.shape)
 
     return X
+
+
+def sample_from_wedged_sphere_varying_dim(n=100, d1=1, d2=2, r=1, noise=None):
+    """Sample points from two wedged spheres of possibly different dimensions.
+
+    Parameters
+    ----------
+    n : int
+        Number of points to sample
+
+    d1 : int
+        Intrinsic dimension of first sphere. The ambient dimension will be
+        ``d1 + 1``.
+        
+    d2 : int
+        Intrinsic dimension of second spheres. The ambient dimension will be
+        ``d2 + 1``.
+
+    r : float
+        Radius of spheres
+
+    noise : float or None
+        If set, will be used as a scale factor for random perturbations
+        of the positions of points, following a standard normal
+        distribution.
+    """
+    data1 = np.random.randn(n, d1+1)
+    data1 = r * data1 / np.sqrt(np.sum(data1**2, 1)[:, None])
+    zeros = np.zeros((len(data1),d2-d1))
+    data1 = np.concatenate((data1,zeros),axis=1)
+    
+    data2 = np.random.randn(n, d2+1)
+    data2 = (r * data2 / np.sqrt(np.sum(data2**2, 1)[:, None])) + np.concatenate((np.array([2*r]),np.zeros(data2.shape[1]-1)))
+    
+    data = np.concatenate((data1,data2))
+    if noise:
+        data += noise * np.random.randn(*data.shape)
+
+    return data
