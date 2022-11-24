@@ -1,8 +1,8 @@
 
 
-"""Create "wedged spheres" data set.
+"""Create "wedged spheres of possibly different dimensions" data set.
 Usage:
-    python make_wedged_spheres.py 2 > Wedged_spheres_2.csv
+    python make_wedged_spheres_varying_dim.py > Wedged_spheres_varying_dim.csv
 """
 
 import argparse
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-d1", "--dimension1", default=2, type=int, help="Intrinsic dimension of first sphere"
+        "-d1", "--dimension1", default=1, type=int, help="Intrinsic dimension of first sphere"
     )
     parser.add_argument(
         "-d2", "--dimension2", default=2, type=int, help="Intrinsic dimension of second sphere"
