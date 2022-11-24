@@ -10,7 +10,7 @@ import sys
 
 import numpy as np
 
-from toast.shapes import sample_from_wedged_spheres_varying_dim
+from toast.shapes import sample_from_wedged_sphere_varying_dim
 
 
 if __name__ == "__main__":
@@ -32,5 +32,5 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    X = sample_from_wedged_spheres_varying_dim(args.num_samples, args.dimension1, args.dimension2)
+    X = sample_from_wedged_sphere_varying_dim(args.num_samples, args.dimension1, args.dimension2)
     np.savetxt(sys.stdout, X)
