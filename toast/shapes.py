@@ -95,18 +95,25 @@ def sample_from_ball(n=100, d=2, r=1, seed=None):
 
     References
     ----------
-    .. [Voelker2007] http://compneuro.uwaterloo.ca/files/publications/voelker.2017.pdf
+    .. [Voelker2007] A. Voelker et al, Efficiently sampling vectors and
+    coordinates from the $n$-sphere and $n$-ball, Technical Report,
+    2017. http://compneuro.uwaterloo.ca/files/publications/voelker.2017.pdf
     """
     rng = np.random.default_rng(seed)
 
-    # Description (needs to be referenced properly): http://extremelearning.com.au/how-to-generate-uniformly-random-points-on-n-spheres-and-n-balls/
+    # This algorithm was originally described in the following blog
+    # post:
+    #
+    # http://extremelearning.com.au/how-to-generate-uniformly-random-points
+    # -on-n-spheres-and-n-balls/
+    #
+    # It's mind-boggling that this works but it's true!
     U = rng.normal(size=(n, d + 2))
     norms = np.sqrt(np.sum(np.abs(U) ** 2, axis=-1))
     U = r * U / norms[:, np.newaxis]
-    X = U[:, 0 : d]
+    X = U[:, 0:d]
 
     return np.asarray(X)
-
 
 
 def sample_from_sphere(n=100, d=2, r=1, noise=None, seed=None):
