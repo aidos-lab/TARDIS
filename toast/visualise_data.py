@@ -41,7 +41,11 @@ if __name__ == "__main__":
     emb = phate.PHATE(decay=10, t=50, random_state=42)
 
     for filename, ax in zip(args.FILE, axes):
-        X = np.loadtxt(filename)
+        if os.path.splitext(filename)[1] == ".csv":
+            X = np.loadtxt(filename, delimiter=",", skiprows=1)
+        else:
+            X = np.loadtxt(filename)
+
         y = X[:, -1].flatten()
 
         iqr = np.subtract(*np.percentile(y, [75, 25]))
