@@ -3,8 +3,8 @@
 import numpy as np
 
 
-def sample_from_annulus(n, r, R, seed=None):
-    """Sample points from a 2D annulus.
+def sample_from_annulus(n, r, R, d=2, seed=None):
+    """Sample points from an annulus.
 
     This function samples `N` points from an annulus with inner radius `r`
     and outer radius `R`.
@@ -19,6 +19,10 @@ def sample_from_annulus(n, r, R, seed=None):
 
     R : float
         Outer radius of annulus
+
+    d : int
+        Dimension of the annulus. Technically, for higher dimensions, we
+        should call the resulting space a "hyperspherical shell."
 
     seed : int, instance of `np.random.Generator`, or `None`
         Seed for the random number generator, or an instance of such
@@ -36,14 +40,78 @@ def sample_from_annulus(n, r, R, seed=None):
         )
 
     rng = np.random.default_rng(seed)
-    thetas = rng.uniform(0, 2 * np.pi, n)
 
-    # Need to sample based on squared radii to account for density
-    # differences.
-    radii = np.sqrt(rng.uniform(r**2, R**2, n))
+    if d == 2:
+        thetas = rng.uniform(0, 2 * np.pi, n)
 
-    X = np.column_stack((radii * np.cos(thetas), radii * np.sin(thetas)))
+        # Need to sample based on squared radii to account for density
+        # differences.
+        radii = np.sqrt(rng.uniform(r**2, R**2, n))
+
+        X = np.column_stack((radii * np.cos(thetas), radii * np.sin(thetas)))
+    else:
+        X = np.empty((1, d))
+
+        while True:
+            sample = sample_from_ball(n, d, r=R, seed=seed)
+            norms = np.sqrt(np.sum(np.abs(sample) ** 2, axis=-1))
+
+            X = np.row_stack((X, sample[norms >= r]))
+
+            if len(X) >= n:
+                X = X[:n]
+                break
+
+        # inner = sample_from_sphere(n, d - 1, r, seed=seed)
+        # outer = sample_from_sphere(n, d - 1, R, seed=seed)
+
+        # X = np.row_stack((inner, outer))
+        # norms = np.sum(np.abs(X) ** 2, axis=-1) ** (1.0 / 2)
+        # print(norms)
+        # print(X.shape)
+
     return X
+
+
+def sample_from_ball(n=100, d=2, r=1, seed=None):
+    """Sample `n` data points from a `d`-ball in `d` dimensions.
+
+    Parameters
+    -----------
+    n : int
+        Number of data points in ball.
+
+    d : int
+        Dimension of the ball. Notice that there is an inherent shift in
+        dimension if you compare a ball to a sphere.
+
+    r : float
+        Radius of ball.
+
+    seed : int, instance of `np.random.Generator`, or `None`
+        Seed for the random number generator, or an instance of such
+        a generator. If set to `None`, the default random number
+        generator will be used.
+
+    Returns
+    -------
+    np.array of shape `(n, d)`
+        Array of sampled coordinates.
+
+    References
+    ----------
+    .. [Voelker2007] http://compneuro.uwaterloo.ca/files/publications/voelker.2017.pdf
+    """
+    rng = np.random.default_rng(seed)
+
+    # Description (needs to be referenced properly): http://extremelearning.com.au/how-to-generate-uniformly-random-points-on-n-spheres-and-n-balls/
+    U = rng.normal(size=(n, d + 2))
+    norms = np.sqrt(np.sum(np.abs(U) ** 2, axis=-1))
+    U = r * U / norms[:, np.newaxis]
+    X = U[:, 0 : d]
+
+    return np.asarray(X)
+
 
 
 def sample_from_sphere(n=100, d=2, r=1, noise=None, seed=None):
@@ -85,7 +153,7 @@ def sample_from_sphere(n=100, d=2, r=1, noise=None, seed=None):
     .. [tadasets] https://github.com/scikit-tda/tadasets
     """
     rng = np.random.default_rng(seed)
-    data = rng.standard_normal((n, d+1))
+    data = rng.standard_normal((n, d + 1))
 
     # Normalize points to the sphere
     data = r * data / np.sqrt(np.sum(data**2, 1)[:, None])
@@ -182,3 +250,6 @@ def sample_from_wedged_sphere_varying_dim(n=100, d1=1, d2=2, r=1, noise=None):
         data += noise * np.random.randn(*data.shape)
 
     return data
+
+
+sample_from_annulus(100, 0.1, 0.2, d=3, seed=42)
