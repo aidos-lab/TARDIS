@@ -22,7 +22,10 @@ def sample_from_annulus(n, r, R, d=2, seed=None):
 
     d : int
         Dimension of the annulus. Technically, for higher dimensions, we
-        should call the resulting space a "hyperspherical shell."
+        should call the resulting space a "hyperspherical shell." Notice
+        that the algorithm for sampling points in higher dimensions uses
+        rejection sampling, so its efficiency decreases as the dimension
+        increases.
 
     seed : int, instance of `np.random.Generator`, or `None`
         Seed for the random number generator, or an instance of such
@@ -61,14 +64,6 @@ def sample_from_annulus(n, r, R, d=2, seed=None):
             if len(X) >= n:
                 X = X[:n]
                 break
-
-        # inner = sample_from_sphere(n, d - 1, r, seed=seed)
-        # outer = sample_from_sphere(n, d - 1, R, seed=seed)
-
-        # X = np.row_stack((inner, outer))
-        # norms = np.sum(np.abs(X) ** 2, axis=-1) ** (1.0 / 2)
-        # print(norms)
-        # print(X.shape)
 
     return X
 
