@@ -53,7 +53,7 @@ def sample_from_annulus(n, r, R, d=2, seed=None):
 
         X = np.column_stack((radii * np.cos(thetas), radii * np.sin(thetas)))
     else:
-        X = np.empty((1, d))
+        X = np.empty((0, d))
 
         while True:
             sample = sample_from_ball(n, d, r=R, seed=seed)
@@ -252,6 +252,3 @@ def sample_from_wedged_sphere_varying_dim(n=100, d1=1, d2=2, r=1, noise=None):
         data += noise * np.random.randn(*data.shape)
 
     return data
-
-
-sample_from_annulus(100, 0.1, 0.2, d=3, seed=42)
