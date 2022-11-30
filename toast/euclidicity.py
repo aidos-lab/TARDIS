@@ -119,9 +119,10 @@ class Euclidicity:
 
         Returns
         -------
-        np.array
+        Tuple of np.array, np.array
             1D array containing Euclidicity estimates. The length of the
-            array depends on the number of scales.
+            array depends on the number of scales. The second array will
+            contain the persistent intrinsic dimension (PID) values.
         """
         r = kwargs.get("r", self.r)
         R = kwargs.get("R", self.R)
@@ -129,13 +130,17 @@ class Euclidicity:
         S = kwargs.get("S", self.S)
 
         bottleneck_distances = []
+        dimensions = []
+
         for r in np.linspace(r, R, self.n_steps):
             for s in np.linspace(s, S, self.n_steps):
                 if r < s:
-                    dist, _ = self._calculate_euclidicity(r, s, X, x)
-                    bottleneck_distances.append(dist)
+                    dist, dim = self._calculate_euclidicity(r, s, X, x)
 
-        return np.asarray(bottleneck_distances)
+                    bottleneck_distances.append(dist)
+                    dimensions.append(dim)
+
+        return np.asarray(bottleneck_distances), np.asarray(dimensions)
 
     # Auxiliary method for performing the 'heavy lifting' when it comes
     # to Euclidicity calculations.

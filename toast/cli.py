@@ -242,7 +242,8 @@ if __name__ == "__main__":
     )
 
     def _process(x, scale=None):
-        values = euclidicity(X, x, **scale)
+        # TODO: Ignoring dimensions for now
+        values, _ = euclidicity(X, x, **scale)
         score = np.mean(np.nan_to_num(values))
 
         s = " ".join(str(a) for a in x)
