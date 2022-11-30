@@ -132,10 +132,14 @@ class Euclidicity:
         bottleneck_distances = []
         dimensions = []
 
+        # Ambient dimension; this is *not* the intrinsic dimension but
+        # we require it to compare to the correct annulus.
+        d = X.shape[1]
+
         for r in np.linspace(r, R, self.n_steps):
             for s in np.linspace(s, S, self.n_steps):
                 if r < s:
-                    dist, dim = self._calculate_euclidicity(r, s, X, x)
+                    dist, dim = self._calculate_euclidicity(r, s, X, x, d)
 
                     bottleneck_distances.append(dist)
                     dimensions.append(dim)
@@ -144,7 +148,7 @@ class Euclidicity:
 
     # Auxiliary method for performing the 'heavy lifting' when it comes
     # to Euclidicity calculations.
-    def _calculate_euclidicity(self, r, s, X, x):
+    def _calculate_euclidicity(self, r, s, X, x, d):
         if self.tree is not None:
             inner_indices = self.tree.query_radius(x.reshape(1, -1), r)[0]
             outer_indices = self.tree.query_radius(x.reshape(1, -1), s)[0]
@@ -166,7 +170,7 @@ class Euclidicity:
         if max_dim < 0:
             return np.nan, max_dim
 
-        euclidean_annulus = sample_from_annulus(len(annulus), r, s)
+        euclidean_annulus = sample_from_annulus(len(annulus), r, s, d=d)
         barcodes_euclidean, _ = self.vr(euclidean_annulus, self.max_dim)
 
         if barcodes_euclidean is None:
