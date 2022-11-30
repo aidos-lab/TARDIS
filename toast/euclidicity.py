@@ -20,7 +20,7 @@ class Euclidicity:
         R=None,
         s=None,
         S=None,
-        n_steps=100,
+        n_steps=10,
         data=None,
         method="gudhi",
     ):
