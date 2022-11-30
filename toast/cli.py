@@ -11,6 +11,7 @@ import joblib
 import os
 
 import numpy as np
+import pandas as pd
 
 from toast.data import sample_vision_data_set
 from toast.euclidicity import Euclidicity
@@ -123,6 +124,14 @@ def setup():
         help="Input point cloud or name of data set to load. If this points "
         "to an existing file, the file is loaded. Else the input is treated "
         "as the name of a (vision) data set.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        help="Output file (optional). If not set, data will be printed to "
+        "standard output. If set, will guess the output format based "
+        "on the file extension.",
     )
 
     euclidicity_group = parser.add_argument_group("Euclidicity calculations")
@@ -242,18 +251,38 @@ if __name__ == "__main__":
     )
 
     def _process(x, scale=None):
-        # TODO: Ignoring dimensions for now
-        values, _ = euclidicity(X, x, **scale)
-        score = np.mean(np.nan_to_num(values))
+        scores, dimensions = euclidicity(X, x, **scale)
+
+        # Aggregate over all scores that we find. We could pick
+        # a different aggregation here!
+        score = np.mean(np.nan_to_num(scores))
+        dimension = np.mean(np.nan_to_num(dimensions))
 
         s = " ".join(str(a) for a in x)
         s += f" {score}"
 
-        # TODO: Could also do something smarter here
-        print(s)
-        return score
+        return score, dimension
 
-    scores = joblib.Parallel(n_jobs=-1)(
+    output = joblib.Parallel(n_jobs=-1)(
         joblib.delayed(_process)(x, scale)
         for x, scale in zip(query_points, scales)
     )
+
+    df = pd.DataFrame(
+        output, columns=["euclidicity", "persistent_intrinsic_dimension"]
+    )
+
+    df = pd.concat([pd.DataFrame(query_points).add_prefix("X"), df], axis=1)
+
+    if args.output is None:
+        print(df.to_csv(index=False))
+    else:
+        extension = os.path.splitext(args.output)[1]
+        if extension == ".tsv":
+            df.to_csv(args.output, index=False, sep="\t")
+        elif extension == ".csv":
+            df.to_csv(args.output, index=False)
+        elif extension == ".npy":
+            np.save(args.output, df)
+        elif extension == ".npz":
+            np.savez(args.output, df)
