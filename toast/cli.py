@@ -256,7 +256,7 @@ if __name__ == "__main__":
         # Aggregate over all scores that we find. We could pick
         # a different aggregation here!
         score = np.mean(np.nan_to_num(scores))
-        dimension = np.mean(np.nan_to_num(dimensions))
+        dimension = np.mean(dimensions)
 
         s = " ".join(str(a) for a in x)
         s += f" {score}"
