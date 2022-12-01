@@ -1,5 +1,5 @@
 #!/bin/sh
 
-for NUM in $(seq 1 5); do
-  ./es.sh IPSC-${NUM} "poetry run python ../toast/cli.py ../data/ipsc.npz -k 10 -d 20 --num-steps 20 > ../output/ipsc_d20_${NUM}.txt"
+for POINTS in 2500 5000 10000; do
+  ./es.sh IPSC-${POINTS} "poetry run python ../toast/cli.py ../data/ipsc.npz --seed 42 -q ${POINTS} -d 16 > ../output/ipsc_d16_q${POINTS}_seed42.txt"
 done
