@@ -8,6 +8,7 @@ import argparse
 import os
 
 import numpy as np
+import pandas as pd
 
 import phate
 
@@ -42,7 +43,9 @@ if __name__ == "__main__":
 
     for filename, ax in zip(args.FILE, axes):
         if os.path.splitext(filename)[1] == ".csv":
-            X = np.loadtxt(filename, delimiter=",", skiprows=1)
+            df = pd.read_csv(filename)
+            df = df.drop("persistent_intrinsic_dimension", axis="columns")
+            X = df.to_numpy()
         else:
             X = np.loadtxt(filename)
 
@@ -63,7 +66,7 @@ if __name__ == "__main__":
             c=y,
             alpha=0.5,
             s=1.0,
-            # Try to highlight outliers a little bit better. 
+            # Try to highlight outliers a little bit better.
             vmax=q3 + 1.5 * iqr,
         )
         fig.colorbar(scatter, ax=ax)
