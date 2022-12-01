@@ -26,7 +26,7 @@ sbatch -p cpu_p                 \
        -J ${NAME}               \
        -o "${NAME}_%j.out"      \
        --cpus-per-task=32       \
-       --mem=8G                 \
+       --mem=16G                \
        --mail-type=END,FAIL     \
        --mail-user=${MAIL_USER} \
        --nice=10000             \
