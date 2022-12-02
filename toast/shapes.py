@@ -254,7 +254,24 @@ def sample_from_wedged_sphere_varying_dim(n=100, d1=1, d2=2, r=1, noise=None):
     return data
 
 
-def sample_from_constant_curvature_disk(n, K=0.0, seed=None):
+def sample_from_constant_curvature_annulus(n, K, r, R, seed=None, **kwargs):
+    rng = np.random.default_rng(seed)
+    X = np.empty((0, 2))
+
+    while True:
+        sample = sample_from_constant_curvature_disk(n, K=K, r=R, seed=rng)
+        norms = np.sqrt(np.sum(np.abs(sample) ** 2, axis=-1))
+
+        X = np.row_stack((X, sample[norms >= r]))
+
+        if len(X) >= n:
+            X = X[:n, :]
+            break
+
+    return X
+
+
+def sample_from_constant_curvature_disk(n, K=0.0, r=1.0, seed=None):
     """Sample from a disk of constant curvature.
 
     Parameters
@@ -278,27 +295,27 @@ def sample_from_constant_curvature_disk(n, K=0.0, seed=None):
     """
     rng = np.random.default_rng(seed)
 
-    theta = np.random.uniform(0, 2 * np.pi, n)
-    u = rng.random.uniform(0, 1, n)
+    theta = rng.uniform(0, 2 * np.pi, n)
+    u = rng.uniform(0, 1, n)
 
     # Sample from Euclidean disk; we could also get this result with
     # other routines from this module, but implementing this here is
     # making everything more self-contained.
     if K == 0.0:
-        r = np.sqrt(u)
+        radii = np.sqrt(u)
 
     # Hyperbolic case (negative curvature)
     elif K < 0.0:
-        r = np.multiply(np.sqrt(u), np.sinh(np.sqrt(-K) / 2.0))
-        r = np.multiply(2.0 / np.sqrt(-K), np.arcsinh(r))
+        radii = np.multiply(np.sqrt(u), np.sinh(np.sqrt(-K) / 2.0))
+        radii = np.multiply(2.0 / np.sqrt(-K), np.arcsinh(radii))
 
     # Spherical case (positive curvature)
     else:
         assert K <= 2
 
-        r = np.multiply(np.sqrt(u), np.sin(np.sqrt(K) / 2.0))
-        r = np.multiply(2.0 / np.sqrt(K), np.arcsin(r))
+        radii = np.multiply(np.sqrt(u), np.sin(np.sqrt(K) / 2.0))
+        radii = np.multiply(2.0 / np.sqrt(K), np.arcsin(radii))
 
-    x = np.multiply(r, np.cos(theta))
-    y = np.multiply(r, np.sin(theta))
+    x = np.multiply(r * radii, np.cos(theta))
+    y = np.multiply(r * radii, np.sin(theta))
     return np.vstack([x, y]).T

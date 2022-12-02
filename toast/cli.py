@@ -7,6 +7,7 @@ it will calculate Euclidicity scores.
 
 import argparse
 import colorlog
+import functools
 import joblib
 import os
 
@@ -15,6 +16,7 @@ import pandas as pd
 
 from toast.data import sample_vision_data_set
 from toast.euclidicity import Euclidicity
+from toast.shapes import sample_from_constant_curvature_annulus
 
 
 def load(filename, batch_size, n_query_points):
@@ -199,6 +201,17 @@ def setup():
         help="Random number generator seed for reproducible experiments",
     )
 
+    experimental_group = parser.add_argument_group("Experimental")
+
+    experimental_group.add_argument(
+        "--curvature",
+        "-K",
+        type=float,
+        default=None,
+        help="If set, change model space from Euclidean annulus to 2D disk of "
+        "constant curvature.",
+    )
+
     args = parser.parse_args()
     return logger, args
 
@@ -239,6 +252,12 @@ if __name__ == "__main__":
     logger.info(f"Maximum dimension: {max_dim}")
     logger.info(f"Number of steps for local sampling: {n_steps}")
 
+    model_sample_fn = None
+    if args.curvature is not None:
+        model_sample_fn = functools.partial(
+            sample_from_constant_curvature_annulus, K=args.curvature
+        )
+
     euclidicity = Euclidicity(
         max_dim=max_dim,
         n_steps=n_steps,
@@ -248,6 +267,7 @@ if __name__ == "__main__":
         S=args.S,
         method="ripser",
         data=X,
+        model_sample_fn=model_sample_fn,
     )
 
     def _process(x, scale=None):
