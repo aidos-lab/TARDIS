@@ -56,13 +56,13 @@ def sample_from_annulus(n, r, R, d=2, seed=None):
         X = np.empty((0, d))
 
         while True:
-            sample = sample_from_ball(n, d, r=R, seed=seed)
+            sample = sample_from_ball(n, d, r=R, seed=rng)
             norms = np.sqrt(np.sum(np.abs(sample) ** 2, axis=-1))
 
             X = np.row_stack((X, sample[norms >= r]))
 
             if len(X) >= n:
-                X = X[:n]
+                X = X[:n, :]
                 break
 
     return X
