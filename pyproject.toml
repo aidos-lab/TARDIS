@@ -21,6 +21,7 @@ torch = "^1.12.1"
 torchvision = "^0.13.1"
 scipy = "^1.9.1"
 phate = "^1.0.9"
+pot = "^0.8.2"
 
 [tool.black]
 line-length = 79

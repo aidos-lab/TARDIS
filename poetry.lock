@@ -287,6 +287,18 @@ docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-issues
 tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
 
 [[package]]
+name = "pot"
+version = "0.8.2"
+description = "Python Optimal Transport Library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = ">=1.16"
+scipy = ">=1.0"
+
+[[package]]
 name = "pygsp"
 version = "0.5.1"
 description = "Graph Signal Processing in Python"
@@ -581,7 +593,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.12"
-content-hash = "c2d37ee2bf6c6ba11f4ad0ee22819ef55adae4855d39cb0967fcefdf92f92b9e"
+content-hash = "0a7b892132c55b4b350899e1e4bd552a789bb365a09e26c065cd4700c7818b36"
 
 [metadata.files]
 certifi = [
@@ -970,6 +982,39 @@ pillow = [
     {file = "Pillow-9.2.0-pp38-pypy38_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:96b5e6874431df16aee0c1ba237574cb6dff1dcb173798faa6a9d8b399a05d0e"},
     {file = "Pillow-9.2.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:0030fdbd926fb85844b8b92e2f9449ba89607231d3dd597a21ae72dc7fe26927"},
     {file = "Pillow-9.2.0.tar.gz", hash = "sha256:75e636fd3e0fb872693f23ccb8a5ff2cd578801251f3a4f6854c6a5d437d3c04"},
+]
+pot = [
+    {file = "POT-0.8.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:2ddf094a1e1788a1ba6266af4c5f6ef57a9eb37645eec8e8fda5ef9f233c0515"},
+    {file = "POT-0.8.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:2a047a57e7cca0821a43b69e5be2d33bc31cef3b2d09a227794ce20c6e80ecd1"},
+    {file = "POT-0.8.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:4247436eb4f13082a53561c419579d30c79b00a975f41e6375ce5377362987db"},
+    {file = "POT-0.8.2-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:750b5fc09f730bef290176efb7ec5870acd4f3319f66bb417b3d38eebc58aada"},
+    {file = "POT-0.8.2-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:0f1da47ad0ff3e8a370542ab69cd6909bb3cbd038f442fe6b6eb5fa020a12a34"},
+    {file = "POT-0.8.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:15de7425ba09a5281b760dfa199454edd427178c7da00f9da4ba53965f6eba86"},
+    {file = "POT-0.8.2-cp310-cp310-win32.whl", hash = "sha256:09dcf580cf91378837ea0cefa3e62b2d62e5ccbc3a5b954575b82e5bae43c405"},
+    {file = "POT-0.8.2-cp310-cp310-win_amd64.whl", hash = "sha256:f8e0d7feb5b42002311624244393869fdace5b244849c4d7c87b104f9bae3f41"},
+    {file = "POT-0.8.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:d23affa522b69252436e7b9a94c8ac73f93513973c1bc3dc527f87f91b3581bc"},
+    {file = "POT-0.8.2-cp37-cp37m-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:71ecf6a8504f1620a91a68e31d70fd4cb532cdb962de651b697c8b70f199bacc"},
+    {file = "POT-0.8.2-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:32fc319f10ee80e942c44bcc1efe7e118240235c39a487d405b6294ff9116d28"},
+    {file = "POT-0.8.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:dd62e03707ef173368e4d67307c7820e74a8553ece53723210c157ec47cc2ec6"},
+    {file = "POT-0.8.2-cp37-cp37m-win32.whl", hash = "sha256:a0f982d1d1ff42cc5c3945d3b34d4edcbb1edfe10dd0a9bced731a0a62dd64df"},
+    {file = "POT-0.8.2-cp37-cp37m-win_amd64.whl", hash = "sha256:80a6519f503a61dd72281005c9c274c20ceeef364afbee699000b3ae1f828d79"},
+    {file = "POT-0.8.2-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:df15c25869a2a0782fe48f15ca6f2eb016349bd174c571afd38496d7eba7fe2d"},
+    {file = "POT-0.8.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:110c88e2e016ecd9bc9d5511067f1845af4c1f660fd0128205dbe5e88ca4913e"},
+    {file = "POT-0.8.2-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:920e7db3c887a0155b601b530db57f7fe5c84279e74c586484f8f71cf18a3f19"},
+    {file = "POT-0.8.2-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:02da730208e087abb199eef38d388a6e78799f7e4c1b78c8350c5d11fef99481"},
+    {file = "POT-0.8.2-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:a0c50fea351d1377829865ea7590cd8e525c26b00f5d6cff903047f78a4274a4"},
+    {file = "POT-0.8.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:860829caaa2452301ca6c62595e7e73a30930f5553f23a6d6bd9c2bf149444ca"},
+    {file = "POT-0.8.2-cp38-cp38-win32.whl", hash = "sha256:4cb7bfea91407b303f476163e25a1ef9e623fae37d279ab49a7a43344dd31906"},
+    {file = "POT-0.8.2-cp38-cp38-win_amd64.whl", hash = "sha256:df301b12abfe1e53f410cbb7026f7f45065ea1f0de1f32dd6e87a290f0b4e7dd"},
+    {file = "POT-0.8.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:6244cf659ba885c08f5872b22c86a39d05280410a818c37004efc69f8b9a24ed"},
+    {file = "POT-0.8.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e7172cc2ad5b3a806f9c8405573c9735d497653492812c0034bf4ec576c43b13"},
+    {file = "POT-0.8.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:6ac9030cb37dedc22210035cf03acfdd1060e7d8ed69dac8a239a4eab282929c"},
+    {file = "POT-0.8.2-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:cc42f0ccbc3434f66c7738050a082aba240fbdd953f54f25d66ccd07aa543928"},
+    {file = "POT-0.8.2-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:82e0f8ded05e6784453d983354133eb8b9f66ff9203cd2ba3545a8d0397aee63"},
+    {file = "POT-0.8.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9a721f9f516506ce7d148e93954409dc7abf550a71381608903814ef4bf59ca4"},
+    {file = "POT-0.8.2-cp39-cp39-win32.whl", hash = "sha256:0b11dae9309c181d277e96ccf91927d5de47102c268ee554e410cf222e982d07"},
+    {file = "POT-0.8.2-cp39-cp39-win_amd64.whl", hash = "sha256:d933b6cda00fa22dbc02f45554953e4b39105d178c83d00fc32091cd2cd050ba"},
+    {file = "POT-0.8.2.tar.gz", hash = "sha256:3ca9ae3c8f370cfcbb4643a01c73dd3c9273e4d4ff7e9af5db70154f34cbc204"},
 ]
 pygsp = [
     {file = "PyGSP-0.5.1-py2.py3-none-any.whl", hash = "sha256:884765260256f143a92053c420797053fda0f4eba1573471526fb4e62a4c4cde"},
