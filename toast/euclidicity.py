@@ -23,6 +23,7 @@ class Euclidicity:
         n_steps=10,
         data=None,
         method="gudhi",
+        model_sample_fn=None,
     ):
         """Initialise new instance of functor.
 
@@ -72,6 +73,11 @@ class Euclidicity:
 
         self.n_steps = n_steps
         self.max_dim = max_dim
+
+        if model_sample_fn is None:
+            model_sample_fn = sample_from_annulus
+
+        self.model_sample_fn = model_sample_fn
 
         if method == "gudhi":
             self.vr = GUDHI()
@@ -170,7 +176,7 @@ class Euclidicity:
         if max_dim < 0:
             return np.nan, max_dim
 
-        euclidean_annulus = sample_from_annulus(len(annulus), r, s, d=d)
+        euclidean_annulus = self.model_sample_fn(n=len(annulus), r=r, R=s, d=d)
         barcodes_euclidean, _ = self.vr(euclidean_annulus, self.max_dim)
 
         if barcodes_euclidean is None:
