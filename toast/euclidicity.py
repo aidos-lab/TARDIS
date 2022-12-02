@@ -138,14 +138,12 @@ class Euclidicity:
         bottleneck_distances = []
         dimensions = []
 
-        # Ambient dimension; this is *not* the intrinsic dimension but
-        # we require it to compare to the correct annulus.
-        d = X.shape[1]
-
         for r in np.linspace(r, R, self.n_steps):
             for s in np.linspace(s, S, self.n_steps):
                 if r < s:
-                    dist, dim = self._calculate_euclidicity(r, s, X, x, d)
+                    dist, dim = self._calculate_euclidicity(
+                        r, s, X, x, self.max_dim
+                    )
 
                     bottleneck_distances.append(dist)
                     dimensions.append(dim)
