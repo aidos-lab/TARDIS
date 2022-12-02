@@ -57,6 +57,22 @@ class GUDHI:
 
 
 class Ripser:
+    def __init__(self, stack_diagrams=True):
+        self.stack_diagrams = stack_diagrams
+
+        if self.stack_diagrams:
+            def distance_fn(D1, D2):
+                return gd.bottleneck_distance(D1, D2)
+        else:
+            def distance_fn(diagrams1, diagrams2):
+                values = [
+                    gd.bottleneck_distance(D1, D2)
+                    for D1, D2 in zip(diagrams1, diagrams2)
+                ]
+                return np.max(values)
+
+        self.distance = distance_fn
+
     def __call__(self, X, max_dim):
         if len(X) == 0:
             return [], -1
@@ -66,12 +82,9 @@ class Ripser:
         )
 
         diagrams = diagrams["dgms"]
-
         max_dim = np.max([d for d, D in enumerate(diagrams) if len(D) > 0])
 
-        diagrams = np.row_stack(diagrams)
+        if self.stack_diagrams:
+            diagrams = np.row_stack(diagrams)
 
         return diagrams, max_dim
-
-    def distance(self, D1, D2):
-        return gd.bottleneck_distance(D1, D2)
