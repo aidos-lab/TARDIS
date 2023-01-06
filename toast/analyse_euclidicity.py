@@ -8,6 +8,7 @@ import argparse
 import os
 
 import numpy as np
+import pandas as pd
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -59,7 +60,9 @@ if __name__ == "__main__":
         print(f"Processing {filename}")
 
         if filename.endswith(".csv"):
-            X = np.loadtxt(filename, delimiter=",", skiprows=1)
+            df = pd.read_csv(filename)
+            df = df.drop("persistent_intrinsic_dimension", axis="columns")
+            X = df.to_numpy()
         else:
             X = np.loadtxt(filename)
 
