@@ -278,9 +278,6 @@ if __name__ == "__main__":
         score = np.mean(np.nan_to_num(scores))
         dimension = np.mean(dimensions)
 
-        s = " ".join(str(a) for a in x)
-        s += f" {score}"
-
         return score, dimension
 
     output = joblib.Parallel(n_jobs=-1)(
