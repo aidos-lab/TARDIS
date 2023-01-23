@@ -191,7 +191,7 @@ def setup():
     sampling_group.add_argument(
         "-q",
         "--num-query-points",
-        default=1000,
+        default=500,
         type=int,
         help="Number of query points for Euclidicity calculations",
     )
