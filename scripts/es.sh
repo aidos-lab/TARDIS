@@ -25,7 +25,7 @@ MAIL_USER=${USER}@helmholtz-muenchen.de
 sbatch -p cpu_p                 \
        -J ${NAME}               \
        -o "${NAME}_%j.out"      \
-       --cpus-per-task=32       \
+       --cpus-per-task=16       \
        --mem=16G                \
        --mail-type=END,FAIL     \
        --mail-user=${MAIL_USER} \
