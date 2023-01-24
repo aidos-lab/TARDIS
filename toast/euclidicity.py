@@ -191,7 +191,7 @@ class Euclidicity:
         # a persistence diagram of the right dimension. Let us not
         # do that for now (since we stack diagrams anyway).
         else:
-            barcodes_euclidean = np.asarray([r, s])
+            barcodes_euclidean = np.asarray([[0, np.inf], [r, s]])
 
         if barcodes_euclidean is None:
             return np.nan, max_dim
