@@ -15,7 +15,10 @@ import numpy as np
 import pandas as pd
 
 from toast.data import sample_vision_data_set
+
 from toast.euclidicity import Euclidicity
+
+from toast.shapes import sample_from_annulus
 from toast.shapes import sample_from_constant_curvature_annulus
 
 
@@ -178,6 +181,12 @@ def setup():
         type=int,
         help="Number of steps for annulus sampling",
     )
+    parser.add_argument(
+        "-f",
+        "--fixed-annulus",
+        action="store_true",
+        help="If set, compare to fixed annulus (disables Euclidean sampling)",
+    )
 
     sampling_group = parser.add_argument_group("Sampling")
 
@@ -212,6 +221,8 @@ def setup():
         "constant curvature.",
     )
 
+    # TODO: Check for compatibility of different settings. We cannot
+    # sample from different spaces if we also use a fixed annulus.
     args = parser.parse_args()
     return logger, args
 
@@ -252,7 +263,7 @@ if __name__ == "__main__":
     logger.info(f"Maximum dimension: {max_dim}")
     logger.info(f"Number of steps for local sampling: {n_steps}")
 
-    model_sample_fn = None
+    model_sample_fn = sample_from_annulus
     if args.curvature is not None:
         model_sample_fn = functools.partial(
             sample_from_constant_curvature_annulus, K=args.curvature

@@ -7,8 +7,6 @@ from sklearn.neighbors import KDTree
 from toast.persistent_homology import GUDHI
 from toast.persistent_homology import Ripser
 
-from toast.shapes import sample_from_annulus
-
 
 class Euclidicity:
     """Functor for calculating Euclidicity of a point cloud."""
@@ -82,9 +80,6 @@ class Euclidicity:
 
         self.n_steps = n_steps
         self.max_dim = max_dim
-
-        if model_sample_fn is None:
-            model_sample_fn = sample_from_annulus
 
         self.model_sample_fn = model_sample_fn
 
