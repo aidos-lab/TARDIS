@@ -183,8 +183,20 @@ class Euclidicity:
         if max_dim < 0:
             return np.nan, max_dim
 
-        euclidean_annulus = self.model_sample_fn(n=len(annulus), r=r, R=s, d=d)
-        barcodes_euclidean, _ = self.vr(euclidean_annulus, d)
+        if self.model_sample_fn is not None:
+            euclidean_annulus = self.model_sample_fn(
+                n=len(annulus), r=r, R=s, d=d
+            )
+            barcodes_euclidean, _ = self.vr(euclidean_annulus, d)
+
+        # No sampling function has been specified. Compare to a fixed
+        # annulus with known persistent homology.
+        #
+        # TODO: Technically, the single feature should be put into
+        # a persistence diagram of the right dimension. Let us not
+        # do that for now (since we stack diagrams anyway).
+        else:
+            barcodes_euclidean = np.asarray([r, s])
 
         if barcodes_euclidean is None:
             return np.nan, max_dim
