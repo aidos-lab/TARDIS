@@ -78,7 +78,7 @@ class Ripser:
             return [], -1
 
         diagrams = ripser_parallel(
-            X, maxdim=max_dim, collapse_edges=True, n_threads=-1
+            X, maxdim=max_dim, collapse_edges=True
         )
 
         diagrams = diagrams["dgms"]
