@@ -65,6 +65,15 @@ class Euclidicity:
             "gudhi" and "ripser" are supported. "gudhi" is better for a
             small, low-dimensional data set, while "ripser" scales well
             to larger, high-dimensional point clouds.
+
+        model_sample_fn : callable
+            Function to be called for sampling from a comparison space.
+            The function is being supplied with the number of samples,
+            the radii of the annulus, and the intrinsic dimension. Its
+            output must be a point cloud representing the annulus. If no
+            sample function is provided, the class will default to
+            compare the topological features with those of fixed
+            Euclidean annulus.
         """
         self.r = r
         self.R = R
@@ -169,13 +178,13 @@ class Euclidicity:
                 ]
             )
 
-        barcodes, max_dim = self.vr(annulus, self.max_dim)
+        barcodes, max_dim = self.vr(annulus, d)
 
         if max_dim < 0:
             return np.nan, max_dim
 
         euclidean_annulus = self.model_sample_fn(n=len(annulus), r=r, R=s, d=d)
-        barcodes_euclidean, _ = self.vr(euclidean_annulus, self.max_dim)
+        barcodes_euclidean, _ = self.vr(euclidean_annulus, d)
 
         if barcodes_euclidean is None:
             return np.nan, max_dim
