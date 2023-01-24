@@ -263,11 +263,19 @@ if __name__ == "__main__":
     logger.info(f"Maximum dimension: {max_dim}")
     logger.info(f"Number of steps for local sampling: {n_steps}")
 
-    model_sample_fn = sample_from_annulus
-    if args.curvature is not None:
+    # Choose a sampling procedure for the inner comparison of sampled
+    # annuli from the data space with model spaces.
+    if args.fixed_annulus:
+        logger.info("Using fixed annulus comparison")
+        model_sample_fn = None
+    elif args.curvature is not None:
+        logger.info("Using constant-curvature model space")
         model_sample_fn = functools.partial(
             sample_from_constant_curvature_annulus, K=args.curvature
         )
+    else:
+        logger.info("Using Euclidean annulus model space")
+        model_sample_fn = sample_from_annulus
 
     euclidicity = Euclidicity(
         max_dim=max_dim,
