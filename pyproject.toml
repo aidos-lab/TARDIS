@@ -9,7 +9,6 @@ readme = "README.md"
 python = ">=3.9,<3.12"
 gudhi = "^3.6.0"
 numpy = "^1.23.2"
-giotto-ph = "^0.2.2"
 scikit-learn = "^1.1.2"
 tqdm = "^4.64.1"
 joblib = "^1.2.0"
@@ -22,6 +21,7 @@ torchvision = "^0.13.1"
 scipy = "^1.9.1"
 phate = "^1.0.9"
 pot = "^0.8.2"
+giotto-ph = "^0.2.2"
 
 [tool.black]
 line-length = 79
