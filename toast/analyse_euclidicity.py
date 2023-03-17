@@ -63,6 +63,8 @@ if __name__ == "__main__":
             df = pd.read_csv(filename)
             df = df.drop("persistent_intrinsic_dimension", axis="columns")
             X = df.to_numpy()
+        elif filename.endswith(".npz"):
+            X = np.load(filename)["arr_0"]
         else:
             X = np.loadtxt(filename)
 

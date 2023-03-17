@@ -42,10 +42,12 @@ if __name__ == "__main__":
     emb = phate.PHATE(decay=10, t=50, random_state=42)
 
     for filename, ax in zip(args.FILE, axes):
-        if os.path.splitext(filename)[1] == ".csv":
+        if (ext := os.path.splitext(filename)[1]) == ".csv":
             df = pd.read_csv(filename)
             df = df.drop("persistent_intrinsic_dimension", axis="columns")
             X = df.to_numpy()
+        elif ext == ".npz":
+            X = np.load(filename)["arr_0"]
         else:
             X = np.loadtxt(filename)
 
