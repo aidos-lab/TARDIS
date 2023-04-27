@@ -1,6 +1,6 @@
 # TOAST: Topological Algorithm for Singularity Tracking
 
-![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TOAST) ![GitHub](https://img.shields.io/github/license/aidos-lab/TOAST)
+[![arXiv](https://img.shields.io/badge/arXiv-2210.00069-b31b1b.svg)](https://arxiv.org/abs/2210.00069) ![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TOAST) ![GitHub](https://img.shields.io/github/license/aidos-lab/TOAST)
 
 This is the code for our preprint on singularity analysis:
 
