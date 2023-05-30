@@ -14,12 +14,12 @@ import os
 import numpy as np
 import pandas as pd
 
-from toast.data import sample_vision_data_set
+from tardis.data import sample_vision_data_set
 
-from toast.euclidicity import Euclidicity
+from tardis.euclidicity import Euclidicity
 
-from toast.shapes import sample_from_annulus
-from toast.shapes import sample_from_constant_curvature_annulus
+from tardis.shapes import sample_from_annulus
+from tardis.shapes import sample_from_constant_curvature_annulus
 
 
 def load(filename, batch_size, n_query_points):
