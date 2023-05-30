@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "toast"
+name = "tardis"
 version = "0.1.0"
-description = "TOAST: Topological Algorithm for Singularity Tracking"
+description = "TARDIS: Topological Algorithms for Robust DIscovery of Singularities"
 authors = ["Julius von Rohrscheidt <julius.rohrscheidt@helmholtz-muenchen.de>", "Bastian Rieck <bastian.rieck@helmholtz-muenchen.de>"]
 readme = "README.md"
 

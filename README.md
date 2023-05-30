@@ -1,12 +1,12 @@
-# TOAST: Topological Algorithm for Singularity Tracking
+# TARDIS: Topological Algorithms for Robust DIscovery of Singularities
 
-[![arXiv](https://img.shields.io/badge/arXiv-2210.00069-b31b1b.svg)](https://arxiv.org/abs/2210.00069) ![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TOAST) ![GitHub](https://img.shields.io/github/license/aidos-lab/TOAST)
+[![arXiv](https://img.shields.io/badge/arXiv-2210.00069-b31b1b.svg)](https://arxiv.org/abs/2210.00069) ![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TARDIS) ![GitHub](https://img.shields.io/github/license/aidos-lab/TARDIS)
 
 This is the code for our preprint on singularity analysis:
 
 ```bibtex
 @Unpublished{vonRohrscheidt22a,
-  title         = {{TOAST}: Topological Algorithm for Singularity Tracking},
+  title         = {Topological Singularity Detection at Multiple Scales},
   author        = {von Rohrscheidt, Julius and Rieck, Bastian},
   year          = 2022,
   archiveprefix = {arXiv},
@@ -14,7 +14,7 @@ This is the code for our preprint on singularity analysis:
   primaryclass  = {cs.LG},
   abstract      = {The manifold hypothesis, which assumes that data lie on or close to an unknown manifold of low intrinsic dimensionality, is a staple of modern machine learning research. However, recent work has shown that real-world data exhibit distinct non-manifold structures, which result in singularities that can lead to erroneous conclusions about the data. Detecting such singularities is therefore crucial as a precursor to interpolation and inference tasks. We address detecting singularities by developing (i) persistent local homology, a new topology-driven framework for quantifying the intrinsic dimension of a data set locally, and (ii) Euclidicity, a topology-based multi-scale measure for assessing the 'manifoldness' of individual points. We show that our approach can reliably identify singularities of complex spaces, while also capturing singular structures in real-world data sets.},
   type          = {Preprint},
-  repository    = {https://github.com/aidos-lab/TOAST},
+  repository    = {https://github.com/aidos-lab/TARDIS},
 }
 ```
 
@@ -58,7 +58,7 @@ are available for processing data.
 
 Run the following commands from the root directory of the repository:
 
-    $ cd toast
+    $ cd tardis
     $ python cli.py ../data/Pinched_torus.txt.gz -q 500 -r 0.05 -R 0.45 -s 0.2 -S 0.6 > ../output/Pinched_torus.txt
 
 This will create a point cloud of 500 sample points with $x, y, z$
@@ -72,7 +72,7 @@ folder in the root directory).
 
 Run the following commands from the root directory of the repository:
 
-    $ cd toast
+    $ cd tardis
     $ python cli.py -k 100 -q 2000 -d 2 --num-steps 20 ../data/Wedged_spheres_2D.txt.gz > ../output/Wedged_spheres_2D.txt
 
 This will make use of the automated parameter selection procedure based
@@ -90,5 +90,5 @@ information.
 ## Issues
 
 This project is maintained by members of the [AIDOS Lab](https://github.com/aidos-lab).
-Please open an [issue](https://github.com/aidos-lab/TOAST/issues) in
+Please open an [issue](https://github.com/aidos-lab/TARDIS/issues) in
 case you encounter any problems.
