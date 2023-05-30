@@ -6,9 +6,9 @@
    id="Layer_1"
    x="0px"
    y="0px"
-   width="149.93401"
-   height="285.26599"
-   viewBox="0 0 149.93401 285.26599"
+   width="74.967003"
+   height="142.633"
+   viewBox="0 0 74.967005 142.633"
    enable-background="new 0 0 1400 980"
    xml:space="preserve"
    sodipodi:docname="TARDIS.svg"
@@ -44,9 +44,9 @@
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
    showgrid="false"
-   inkscape:zoom="0.68113143"
-   inkscape:cx="4.4044363"
-   inkscape:cy="184.98633"
+   inkscape:zoom="0.96326531"
+   inkscape:cx="-70.074153"
+   inkscape:cy="113.15678"
    inkscape:window-width="1920"
    inkscape:window-height="1115"
    inkscape:window-x="0"
@@ -55,14 +55,14 @@
    inkscape:current-layer="Layer_1" />
 <g
    id="g292"
-   transform="translate(-1038.061,-184.613)">
+   transform="matrix(0.5,0,0,0.5,-519.0305,-92.3065)">
 		<g
    id="g12">
 			<g
    id="g6">
 				<polygon
    fill="#1a48a4"
-   points="1119.594,210.092 1106.463,210.092 1106.463,190.859 1113.028,186.022 1119.594,190.859 "
+   points="1106.463,190.859 1113.028,186.022 1119.594,190.859 1119.594,210.092 1106.463,210.092 "
    id="polygon4" />
 			</g>
 			<g
@@ -138,7 +138,7 @@
    id="g46">
 					<polygon
    fill="#1c75bc"
-   points="1122.349,201.014 1122.349,205.963 1175.091,213.887 1174.922,216.144 1051.135,216.144 1050.966,213.887 1103.708,205.963 1103.708,201.014 "
+   points="1175.091,213.887 1174.922,216.144 1051.135,216.144 1050.966,213.887 1103.708,205.963 1103.708,201.014 1122.349,201.014 1122.349,205.963 "
    id="polygon44" />
 				</g>
 				<g
