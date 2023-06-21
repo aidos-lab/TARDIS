@@ -1,6 +1,6 @@
 # TARDIS: Topological Algorithms for Robust DIscovery of Singularities
 
-[![arXiv](https://img.shields.io/badge/arXiv-2210.00069-b31b1b.svg)](https://arxiv.org/abs/2210.00069) ![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TARDIS) ![GitHub](https://img.shields.io/github/license/aidos-lab/TARDIS)
+[![arXiv](https://img.shields.io/badge/arXiv-2210.00069-b31b1b.svg)](https://arxiv.org/abs/2210.00069) [![Maintainability](https://api.codeclimate.com/v1/badges/4656850a9d0eb2f85b6e/maintainability)](https://codeclimate.com/github/aidos-lab/TARDIS/maintainability) ![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/TARDIS) ![GitHub](https://img.shields.io/github/license/aidos-lab/TARDIS)
 
 ![TARDIS icon](./TARDIS.svg)
 
