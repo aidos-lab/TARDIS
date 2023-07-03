@@ -14,48 +14,13 @@ import os
 import numpy as np
 import pandas as pd
 
-from tardis.utils import load_data
-
 from tardis.euclidicity import Euclidicity
 
 from tardis.shapes import sample_from_annulus
 from tardis.shapes import sample_from_constant_curvature_annulus
 
-
-def estimate_scales(X, query_points, k_max):
-    """Perform simple scale estimation of the data set.
-
-    Parameters
-    ----------
-    k_max : int
-        Maximum number of neighbours to consider for the local scale
-        estimation.
-
-    Returns
-    --------
-    List of dict
-        A list of dictionaries consisting of the minimum and maximum
-        inner and outer radius, respectively.
-    """
-    from sklearn.neighbors import KDTree
-
-    tree = KDTree(X)
-    distances, _ = tree.query(query_points, k=k_max, return_distance=True)
-
-    # Ignore the distance to ourself, as we know that one already.
-    distances = distances[:, 1:]
-
-    scales = [
-        {
-            "r": dist[0],
-            "R": dist[round(k_max / 3)],
-            "s": dist[round(k_max / 3)],
-            "S": dist[-1],
-        }
-        for dist in distances
-    ]
-
-    return scales
+from tardis.utils import load_data
+from tardis.utils import estimate_scales
 
 
 def setup():

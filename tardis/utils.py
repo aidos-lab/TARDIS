@@ -9,6 +9,8 @@ import os
 
 import numpy as np
 
+from sklearn.neighbors import KDTree
+
 from tardis.data import sample_vision_data_set
 
 
@@ -64,3 +66,37 @@ def load_data(filename, batch_size, n_query_points, seed=None):
     query_points = X[rng.choice(X.shape[0], n_query_points, replace=False)]
 
     return X, query_points
+
+
+def estimate_scales(X, query_points, k_max):
+    """Perform simple scale estimation of the data set.
+
+    Parameters
+    ----------
+    k_max : int
+        Maximum number of neighbours to consider for the local scale
+        estimation.
+
+    Returns
+    --------
+    List of dict
+        A list of dictionaries consisting of the minimum and maximum
+        inner and outer radius, respectively.
+    """
+    tree = KDTree(X)
+    distances, _ = tree.query(query_points, k=k_max, return_distance=True)
+
+    # Ignore the distance to ourself, as we know that one already.
+    distances = distances[:, 1:]
+
+    scales = [
+        {
+            "r": dist[0],
+            "R": dist[round(k_max / 3)],
+            "s": dist[round(k_max / 3)],
+            "S": dist[-1],
+        }
+        for dist in distances
+    ]
+
+    return scales
