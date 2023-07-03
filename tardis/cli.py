@@ -14,57 +14,12 @@ import os
 import numpy as np
 import pandas as pd
 
-from tardis.data import sample_vision_data_set
+from tardis.utils import load_data
 
 from tardis.euclidicity import Euclidicity
 
 from tardis.shapes import sample_from_annulus
 from tardis.shapes import sample_from_constant_curvature_annulus
-
-
-def load(filename, batch_size, n_query_points):
-    """Load data from filename, depending on input type.
-
-    Parameters
-    ----------
-    filename : str
-        If this points to a file name, the function will attempt to load
-        said file and parse it. Else, the function will consider this as
-        the name of a data set to load.
-
-    batch_size : int
-        Number of points to sample from data set.
-
-    n_query_points : int
-        Number of points to use for the subsequent Euclidicity
-        calculations. It is possible to use the full data set.
-
-    Returns
-    -------
-    Tuple of np.array, np.array
-        The (subsampled) data set along with its query points is
-        returned.
-    """
-    if os.path.exists(filename):
-        ext = os.path.splitext(filename)[1]
-        if ext == ".txt" or ext == ".gz":
-            X = np.loadtxt(filename)
-        elif ext == ".npz":
-            X = np.load(filename)["data"]
-    else:
-        X = sample_vision_data_set(filename, batch_size)
-
-    assert X is not None, RuntimeError(
-        f"Unable to handle input file {filename}"
-    )
-
-    logger.info(f"Sampling a batch of {batch_size} points")
-    logger.info(f"Using {n_query_points} query points")
-
-    X = X[rng.choice(X.shape[0], batch_size, replace=False)]
-    query_points = X[rng.choice(X.shape[0], n_query_points, replace=False)]
-
-    return X, query_points
 
 
 def estimate_scales(X, query_points, k_max):
@@ -235,7 +190,12 @@ if __name__ == "__main__":
 
     rng = np.random.default_rng(args.seed)
 
-    X, query_points = load(args.INPUT, args.batch_size, args.num_query_points)
+    X, query_points = load_data(
+        args.INPUT,
+        args.batch_size,
+        args.num_query_points,
+        seed=rng,
+    )
 
     r, R, s, S = args.r, args.R, args.s, args.S
     k = args.num_neighbours
