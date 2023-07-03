@@ -81,6 +81,12 @@ This will make use of the automated parameter selection procedure based
 on nearest neighbours. Notice that this example uses more query
 points; it is of course possible to adjust this parameter.
 
+## API & examples
+
+Check out the [examples folder](/examples) for some code snippets that
+demonstrate how to use TARDIS in your own code. They all make use of the
+[preliminary API](/tardis/api.py).
+
 ## License
 
 Our code is released under a BSD-3-Clause license. This license
