@@ -33,7 +33,18 @@ if __name__ == "__main__":
         return_dimensions=True,
     )
 
-    # Let's calculate Euclidicity with respect to *another* data set.
+    # We can also just specify a number of neighbours to use for scale
+    # estimation. Note that most of the parameters specified below can
+    # be considered optional since we provide useful defaults.
+    euclidicity = calculate_euclidicity(
+        X,
+        max_dim=3,
+        n_steps=5,
+        k=10,
+    )
+
+    # Finally, let's calculate Euclidicity with respect to *another*
+    # data set.
     Y = rng.normal(size=(10, 3))
     euclidicity = calculate_euclidicity(
         X, Y, r=0.01, R=0.25, s=0.05, S=0.5, max_dim=3
