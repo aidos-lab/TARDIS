@@ -45,10 +45,10 @@ def calculate_euclidicity(
     euclidicity = Euclidicity(
         max_dim=max_dim,
         n_steps=n_steps,
-        r=r,
-        R=R,
-        s=s,
-        S=S,
+        r=r_,
+        R=R_,
+        s=s_,
+        S=S_,
         method="ripser",
         data=X,
     )
@@ -61,12 +61,13 @@ def calculate_euclidicity(
 
         return score, dimension
 
-    euclidicity, persistent_intrinsic_dimension = joblib.Parallel(
-        n_jobs=n_jobs
-    )(
+    output = joblib.Parallel(n_jobs=n_jobs)(
         joblib.delayed(_process)(x, scale)
         for x, scale in zip(query_points, scales)
     )
+
+    euclidicity = np.asarray([e for (e, _) in output])
+    persistent_intrinsic_dimension = np.asarray([d for (_, d) in output])
 
     if return_dimensions:
         return euclidicity, persistent_intrinsic_dimension
