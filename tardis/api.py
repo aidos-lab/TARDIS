@@ -10,6 +10,7 @@ import joblib
 import numpy as np
 
 from tardis.euclidicity import Euclidicity
+from tardis.utils import estimate_scales
 
 
 def calculate_euclidicity(
@@ -40,7 +41,7 @@ def calculate_euclidicity(
     if all([x is not None for x in [r_, R_, s_, S_]]):
         scales = [dict()] * len(query_points)
     else:
-        raise NotImplementedError("Scale estimation not yet implemented")
+        scales = estimate_scales(X, query_points, k)
 
     euclidicity = Euclidicity(
         max_dim=max_dim,
