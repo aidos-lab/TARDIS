@@ -9,6 +9,7 @@ TARDIS: Topological Algorithms for Robust DIscovery of Singularities
     :maxdepth: 2
     :caption: Modules
 
+    api
     data
     utils
 
