@@ -1,16 +1,16 @@
-.. TARDIS documentation master file, created by
-   sphinx-quickstart on Mon Jul 17 17:49:48 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to TARDIS's documentation!
-==================================
+TARDIS: Topological Algorithms for Robust DIscovery of Singularities
+====================================================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 2
+    :caption: Contents:
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Modules
 
+    data
+    utils
 
 Indices and tables
 ==================
