@@ -39,7 +39,7 @@ def linkcode_resolve(domain, info):
     # Let's frown on global imports and do everything locally as much as
     # we can.
     import sys
-    import torch_topological
+    import tardis
 
     if domain != "py":
         return None
@@ -60,7 +60,7 @@ def linkcode_resolve(domain, info):
 
         fn = inspect.getsourcefile(obj)
         fn = os.path.relpath(
-            fn, start=os.path.dirname(torch_topological.__file__)
+            fn, start=os.path.dirname(tardis.__file__)
         )
 
         source, lineno = inspect.getsourcelines(obj)
