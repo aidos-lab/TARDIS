@@ -23,6 +23,9 @@ phate = "^1.0.9"
 pot = "^0.8.2"
 giotto-ph = "^0.2.2"
 
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.0.1"
+
 [tool.black]
 line-length = 79
 
