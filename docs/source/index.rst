@@ -43,6 +43,10 @@ and consider citing us:
 Documentation
 -------------
 
+Please find the API documentation and the module documentation below. As
+with a lot of academic code, TARDIS is a constant work in progress. Your
+contributions are more than welcome!
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents:

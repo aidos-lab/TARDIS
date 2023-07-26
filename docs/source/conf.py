@@ -25,12 +25,19 @@ exclude_patterns = []
 # `class` targets etc. (They still work, though!)
 default_role = "obj"
 
-html_theme = "alabaster"
+html_theme = "furo"
+html_logo = "../../TARDIS.svg"
 html_static_path = ["_static"]
 
 # Ensures that modules are sorted correctly. Since they all pertain to
 # the same package, the prefix itself can be ignored.
 modindex_common_prefix = ["tardis."]
+
+html_theme_options = {
+    "source_repository": "https://github.com/aidos-lab/TARDIS/",
+    "source_branch": "main",
+    "source_directory": "docs/source/",
+}
 
 
 # Specifies how to actually find the sources of the modules. Ensures
@@ -59,9 +66,7 @@ def linkcode_resolve(domain, info):
         import os
 
         fn = inspect.getsourcefile(obj)
-        fn = os.path.relpath(
-            fn, start=os.path.dirname(tardis.__file__)
-        )
+        fn = os.path.relpath(fn, start=os.path.dirname(tardis.__file__))
 
         source, lineno = inspect.getsourcelines(obj)
         return fn, lineno, lineno + len(source) - 1
@@ -72,7 +77,7 @@ def linkcode_resolve(domain, info):
     except Exception:
         source = None
 
-    root = f"https://github.com/aidos-lab/tardis/tree/main/{project}/"
+    root = f"https://github.com/aidos-lab/TARDIS/tree/main/{project.lower()}/"
 
     if source is not None:
         fn, start, end = source
