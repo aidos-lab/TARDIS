@@ -25,6 +25,7 @@ giotto-ph = "^0.2.2"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.1"
+furo = "^2023.5.20"
 
 [tool.black]
 line-length = 79
