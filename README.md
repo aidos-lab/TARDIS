@@ -4,19 +4,20 @@
 
 ![TARDIS icon](./TARDIS.svg)
 
-This is the code for our preprint on singularity analysis:
+This is the code for our [ICML paper on topology-driven singularity analysis](https://proceedings.mlr.press/v202/von-rohrscheidt23a.html):
 
 ```bibtex
-@Unpublished{vonRohrscheidt22a,
-  title         = {Topological Singularity Detection at Multiple Scales},
-  author        = {von Rohrscheidt, Julius and Rieck, Bastian},
-  year          = 2022,
-  archiveprefix = {arXiv},
-  eprint        = {2210.00069},
-  primaryclass  = {cs.LG},
-  abstract      = {The manifold hypothesis, which assumes that data lie on or close to an unknown manifold of low intrinsic dimensionality, is a staple of modern machine learning research. However, recent work has shown that real-world data exhibit distinct non-manifold structures, which result in singularities that can lead to erroneous conclusions about the data. Detecting such singularities is therefore crucial as a precursor to interpolation and inference tasks. We address detecting singularities by developing (i) persistent local homology, a new topology-driven framework for quantifying the intrinsic dimension of a data set locally, and (ii) Euclidicity, a topology-based multi-scale measure for assessing the 'manifoldness' of individual points. We show that our approach can reliably identify singularities of complex spaces, while also capturing singular structures in real-world data sets.},
-  type          = {Preprint},
-  repository    = {https://github.com/aidos-lab/TARDIS},
+@inproceedings{vonRohrscheidt23a,
+    title       = {Topological Singularity Detection at Multiple Scales},
+    author      = {von Rohrscheidt, Julius and Rieck, Bastian},
+    year        = 2023,
+    booktitle   = {Proceedings of the 40th International Conference on Machine Learning},
+    publisher   = {PMLR},
+    series      = {Proceedings of Machine Learning Research},
+    number      = 202,
+    pages       = {35175--35197},
+    editor      = {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},
+    abstract    = {The manifold hypothesis, which assumes that data lies on or close to an unknown manifold of low intrinsic dimension, is a staple of modern machine learning research. However, recent work has shown that real-world data exhibits distinct non-manifold structures, i.e. singularities, that can lead to erroneous findings. Detecting such singularities is therefore crucial as a precursor to interpolation and inference tasks. We address this issue by developing a topological framework that (i) quantifies the local intrinsic dimension, and (ii) yields a Euclidicity score for assessing the `manifoldness' of a point along multiple scales. Our approach identifies singularities of complex spaces, while also capturing singular structures and local geometric complexity in image data.}
 }
 ```
 
@@ -69,7 +70,7 @@ coordinates, followed by our Euclidicity score.
 ### Wedged spheres (with automated parameter selection)
 
 **Warning**: this example might require a long runtime on an ordinary
-machine. We ran this on our cluster (see also the [`scripts`](./scripts)
+machine. We ran this on our cluster (see also the [`scripts`](https://github.com/aidos-lab/TARDIS/tree/main/scripts)
 folder in the root directory).
 
 Run the following commands from the root directory of the repository:
@@ -83,9 +84,9 @@ points; it is of course possible to adjust this parameter.
 
 ## API & examples
 
-Check out the [examples folder](/examples) for some code snippets that
+Check out the [examples folder](https://github.com/aidos-lab/TARDIS/tree/main/examples) for some code snippets that
 demonstrate how to use TARDIS in your own code. They all make use of the
-[preliminary API](/tardis/api.py).
+[preliminary API](https://github.com/aidos-lab/TARDIS/blob/main/tardis/api.py).
 
 ## License
 
